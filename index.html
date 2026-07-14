@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#000000" />
+
+  <title>Ondřej Hladík — Graphic Designer / Portfolio</title>
+  <meta name="description" content="Portfolio of Ondřej Hladík. Graphic design student based in Prague — visual identities, posters, editorial, web and typography." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Ondřej Hladík — Graphic Designer / Portfolio" />
+  <meta property="og:description" content="Graphic design student based in Prague. Identity, posters, editorial, web." />
+  <meta property="og:locale" content="en_GB" />
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="progress" data-progress aria-hidden="true"></div>
+
+  <!-- floating project preview (follows cursor over work rows) -->
+  <div class="preview" data-preview aria-hidden="true"><img class="preview__img" src="img/beetle-1.svg" alt="" /></div>
+
+  <!-- beetle that points its head toward the contact e-mail while hovering it -->
+  <img class="mailbug" data-mailbug src="img/beetle-1.svg" alt="" aria-hidden="true" />
+
+  <!-- intro / loader — "oh" morphs into the logo -->
+  <div class="intro" aria-hidden="true">
+    <svg class="oh-loader" viewBox="0 0 379.86 510.59" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Loading">
+      <g class="mark" font-family="Georgia, 'Times New Roman', Times, serif" font-style="italic" fill="currentColor">
+        <text class="gl-o" font-size="335.79" x="0" y="0">o</text>
+        <text class="gl-h" font-size="393.82" x="0" y="0">h</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ===================== NAV ===================== -->
+  <header class="nav" data-nav>
+    <div class="nav__inner">
+      <a href="#top" class="nav__logo" data-cursor="hover" data-magnetic aria-label="Ondřej Hladík — home">
+        <img src="logo.svg" class="nav__logo-mark" alt="ho" />
+      </a>
+
+      <span class="nav__center">SELECTED WORK</span>
+
+      <button class="nav__burger" data-burger aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- menu (opens from hamburger) -->
+  <div class="menu" data-menu>
+    <nav class="menu__links" aria-label="Navigation">
+      <a href="#work">Work</a>
+      <a href="#team">Team</a>
+      <a href="#contact">Get in touch</a>
+    </nav>
+  </div>
+
+  <main id="top">
+    <!-- ===================== PROJECTS (coming soon) ===================== -->
+    <section class="projects" id="work">
+      <div class="projects__coming">
+        <h2 class="projects__coming-title" data-title>projekty coming soon!</h2>
+      </div>
+    </section>
+
+    <!-- ===================== CONTACT (footer area) ===================== -->
+    <section class="contact" id="contact">
+      <div class="contact__body">
+        <h2 class="contact__title" data-title>GET IN TOUCH</h2>
+        <a href="mailto:ondrej.hladik@icloud.com" class="contact__mail" data-cursor="hover" data-magnetic>ondrej.hladik@icloud.com</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <img src="logo.svg" class="footer__logo" alt="Ondřej Hladík" />
+      </div>
+      <div class="footer__socials">
+        <a href="https://www.instagram.com/onhl.design/" target="_blank" rel="noopener noreferrer" data-cursor="hover">INSTAGRAM</a>
+        <a href="https://www.linkedin.com/in/ond%C5%99ej-hlad%C3%ADk-58a496394/" target="_blank" rel="noopener noreferrer" data-cursor="hover">LINKEDIN</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================== PROJECT DETAIL (opens on card click) ===================== -->
+  <div class="pmodal" data-pmodal role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pmodal-title">
+    <button class="pmodal__close" type="button" data-pmodal-close aria-label="Close project">✕</button>
+    <button class="pmodal__back" type="button" data-pmodal-close aria-label="Back to projects">Back to projects</button>
+    <div class="pmodal__scroll" data-pmodal-scroll>
+      <header class="pmodal__head">
+        <h2 class="pmodal__title" id="pmodal-title" data-pm-title>Project</h2>
+      </header>
+      <div class="pmodal__intro" data-pm-intro></div>
+      <div class="pmodal__gallery" data-pm-gallery></div>
+      <div class="pmodal__credits" data-pm-credits></div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

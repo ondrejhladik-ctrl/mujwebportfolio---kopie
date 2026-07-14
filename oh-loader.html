@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>oh → logo · loading</title>
+<style>
+  :root{
+    --bg:#0e0e11;
+    --ink:#f1ede4;          /* barva loga (přebírá se přes currentColor) */
+    --muted:#6f6d78;
+    --line:#26262d;
+    --accent:#c8a15a;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 90% at 50% 12%, #16161b 0%, var(--bg) 60%);
+    color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    display:flex;flex-direction:column;min-height:100%;
+  }
+
+  /* ---------- demo chrome (mimo samotný loader) ---------- */
+  header{
+    padding:26px 28px 0;
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  }
+  header .title{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  header .title b{color:var(--ink);font-weight:600}
+  header .hint{font-size:12px;color:var(--muted)}
+
+  .stage{
+    flex:1;
+    display:grid;place-items:center;
+    padding:40px;
+    overflow:visible;              /* nechá „oh" přesahovat rám během morphu */
+  }
+
+  /* ====================================================================
+     ▼▼▼  LOADER — tuhle část zkopíruj na web  ▼▼▼
+     Potřebuje jen tenhle <svg> + <script> níže.
+     ==================================================================== */
+  .oh-loader{
+    width:clamp(140px,26vw,260px);
+    height:auto;
+    color:var(--ink);             /* nebo dej currentColor z rodiče */
+    overflow:visible;             /* důležité: rám je rozměr loga, „oh" přesahuje */
+    display:block;
+  }
+  .oh-loader .mark > text{
+    transform-box:view-box;       /* transformace počítej v souřadnicích viewBoxu */
+    transform-origin:0 0;
+    will-change:transform;
+  }
+  /* Statický stav = HOTOVÉ LOGO (bez JS i pro reduced-motion). Shodné s logoan2.svg */
+  .oh-loader .gl-o{ transform:translate(0px,408.77px) scale(2.11,1); }
+  .oh-loader .gl-h{ transform:translate(14.72px,333.35px) scale(1,1); }
+  /* ====================================================================
+     ▲▲▲  konec markup loaderu  ▲▲▲
+     ==================================================================== */
+
+  /* ---------- ovládání dema ---------- */
+  .controls{
+    border-top:1px solid var(--line);
+    padding:16px 28px 24px;
+    display:flex;flex-wrap:wrap;align-items:center;gap:22px;
+    font-size:13px;color:var(--muted);
+  }
+  .controls button{
+    font:inherit;color:var(--ink);background:transparent;
+    border:1px solid var(--line);border-radius:999px;
+    padding:8px 18px;cursor:pointer;letter-spacing:.02em;
+    transition:border-color .2s,color .2s;
+  }
+  .controls button:hover{border-color:var(--accent);color:var(--accent)}
+  .controls button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .ctl{display:flex;align-items:center;gap:9px}
+  .ctl label{cursor:pointer;user-select:none}
+  input[type=range]{accent-color:var(--accent);width:130px}
+  .val{color:var(--ink);font-variant-numeric:tabular-nums;min-width:52px}
+  .toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+  .toggle input{accent-color:var(--accent);width:15px;height:15px}
+  .spacer{flex:1}
+  .note{font-size:12px;color:var(--muted);max-width:34ch;line-height:1.5}
+  @media (max-width:620px){
+    header{flex-direction:column;gap:4px}
+    .note{display:none}
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="title"><b>oh</b> &nbsp;→&nbsp; logo · loading</div>
+    <div class="hint">deformace „oh" do značky · konec = logoan2</div>
+  </header>
+
+  <div class="stage">
+    <!-- ▼ LOADER MARKUP ▼ -->
+    <svg class="oh-loader" viewBox="0 0 379.86 510.59"
+         xmlns="http://www.w3.org/2000/svg"
+         role="img" aria-label="Načítání">
+      <g class="mark" font-family="Georgia, 'Times New Roman', Times, serif"
+         font-style="italic" fill="currentColor">
+        <!-- pořadí: o pod, h přes -->
+        <text class="gl-o" font-size="335.79" x="0" y="0">o</text>
+        <text class="gl-h" font-size="393.82" x="0" y="0">h</text>
+      </g>
+    </svg>
+    <!-- ▲ LOADER MARKUP ▲ -->
+  </div>
+
+  <div class="controls">
+    <button id="replay" type="button">Přehrát znovu</button>
+    <div class="ctl">
+      <label for="dur">Délka</label>
+      <input id="dur" type="range" min="500" max="2400" step="50" value="1200">
+      <span class="val" id="durVal">1200 ms</span>
+    </div>
+    <label class="toggle"><input id="loop" type="checkbox"> smyčka (loading)</label>
+    <div class="spacer"></div>
+    <div class="note">Rám SVG = rozměr hotového loga, „oh" na startu přesahuje ven (<code>overflow:visible</code>). Bez JS / při <code>reduced-motion</code> zůstane rovnou logo.</div>
+  </div>
+
+<!-- ====================================================================
+     ▼▼▼  LOADER SCRIPT — zkopíruj spolu s SVG výše  ▼▼▼
+     Nastavení přes atributy na <svg>:  data-duration="1200"  data-loop="false"
+     Volání: OhLoader.play(svgEl, { duration, loop, easing })
+     ==================================================================== -->
+<script>
+window.OhLoader = (function(){
+  const NS = 'http://www.w3.org/2000/svg';
+
+  // — geometrie převzatá z logoan.svg (start) a logoan2.svg (cíl) —
+  const SIZE_O = 335.79;                     // velikost „o"
+  const SIZE_H = 393.82;                     // velikost „h" v logu
+  const Y_START = 284.23;                    // účaří na startu (logoan.svg)
+  const O_END = { ty:408.77, sx:2.11 };      // roztažené „o" v logu
+  const H_END = { tx:14.72,  ty:333.35 };    // „h" v logu
+  const kH = SIZE_O / SIZE_H;                // zmenšení „h" na start velikost
+  const DEFAULT_EASE = 'cubic-bezier(.76,0,.24,1)';  // klidný, „viskózní" morph
+
+  const running = new WeakMap();
+
+  // Změř skutečný přesah „o" v aktuálním fontu → přesné napojení „h" na startu.
+  function measureO(mark){
+    const probe = document.createElementNS(NS,'text');
+    probe.setAttribute('font-size', SIZE_O);
+    probe.setAttribute('x','-99999'); probe.setAttribute('y','0');
+    probe.textContent = 'o';
+    mark.appendChild(probe);
+    const w = probe.getComputedTextLength();
+    probe.remove();
+    return w;
+  }
+
+  function play(svg, opts){
+    opts = opts || {};
+    const mark = svg.querySelector('.mark');
+    const o = svg.querySelector('.gl-o');
+    const h = svg.querySelector('.gl-h');
+    if (!o || !h) return;
+
+    const prev = running.get(svg);
+    if (prev) prev.forEach(a => a.cancel());
+
+    // cílový stav (logo) — použije se i pro reduced-motion
+    const setLogo = () => {
+      o.style.transform = `translate(0px,${O_END.ty}px) scale(${O_END.sx},1)`;
+      h.style.transform = `translate(${H_END.tx}px,${H_END.ty}px) scale(1,1)`;
+    };
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches){ setLogo(); return; }
+
+    const dur  = opts.duration ?? (+svg.dataset.duration || 1200);
+    const loop = opts.loop ?? (svg.dataset.loop === 'true');
+    const ease = opts.easing ?? svg.dataset.easing ?? DEFAULT_EASE;
+    const Wox  = measureO(mark);
+
+    const oKF = [
+      { transform:`translate(0px,${Y_START}px) scale(1,1)` },
+      { transform:`translate(0px,${O_END.ty}px) scale(${O_END.sx},1)` }
+    ];
+    const hKF = [
+      { transform:`translate(${Wox}px,${Y_START}px) scale(${kH},${kH})` },
+      { transform:`translate(${H_END.tx}px,${H_END.ty}px) scale(1,1)` }
+    ];
+    const timing = {
+      duration: dur,
+      easing: ease,
+      fill: 'forwards',
+      iterations: loop ? Infinity : 1,
+      direction: loop ? 'alternate' : 'normal'
+    };
+
+    const a1 = o.animate(oKF, timing);
+    const a2 = h.animate(hKF, timing);
+    running.set(svg, [a1, a2]);
+    return a2;
+  }
+
+  // Auto-start všech .oh-loader (skript je za SVG → bez bliknutí loga).
+  document.querySelectorAll('.oh-loader').forEach(el => play(el));
+
+  return { play };
+})();
+</script>
+<!-- ====================================================================
+     ▲▲▲  konec LOADER SCRIPT  ▲▲▲
+     ==================================================================== -->
+
+<!-- ↓ pouze pro tuto demo stránku (na web nekopíruj) ↓ -->
+<script>
+(function(){
+  const svg = document.querySelector('.oh-loader');
+  const dur = document.getElementById('dur');
+  const durVal = document.getElementById('durVal');
+  const loop = document.getElementById('loop');
+  const replay = document.getElementById('replay');
+  const run = () => OhLoader.play(svg, {
+    duration: +dur.value,
+    loop: loop.checked
+  });
+  dur.addEventListener('input', () => { durVal.textContent = dur.value + ' ms'; });
+  dur.addEventListener('change', run);
+  loop.addEventListener('change', run);
+  replay.addEventListener('click', run);
+})();
+</script>
+</body>
+</html>
