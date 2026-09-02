@@ -563,6 +563,7 @@
   --------------------------------------------------------- */
   const PROJECTS = {
     'masaze': {
+      web: 'https://masazekostelec.cz/',
       desc: [
         'Masáže Kostelec is a small massage studio run by Jana Hladíková — a mobile masseuse who brings reconditioning and relaxation massage to wherever you feel most at ease. The brief was to give that calm, personal service a visual identity of its own.',
         'The identity grows from one quiet mark — a sun rising over a soft wave — that carries the studio\'s promise: awakening body and mind through touch. Around it sits a warm, earthy palette of cream, terracotta and olive, with a gentle lowercase wordmark that never raises its voice.',
@@ -583,38 +584,49 @@
         { img: 'img/masaze/logo-mockup.jpg', wide: true }
       ]
     },
+    'molo-lipno': {
+      desc: [
+        'Molo Lipno is a resort on the shore of Lipno lake, where every apartment is built around the same warm palette — oak, bouclé and low, honest light. The brief was simple: photograph the interiors so they feel the way the rooms actually feel when you walk in.',
+        'I shot everything in available light, waiting for the sun to come through the sheer curtains rather than fighting it with flash. Straight-on frames hold the architecture — the kitchen line, the slatted oak wall behind the bed — while tighter shots pick up the details that give the place its character.',
+        'The set closes on two frames that step away from the room itself: a wall light read as pure geometry, and one long exposure where the interior dissolves into colour and movement.'
+      ],
+      credits: [
+        'Photos by Ondřej Hladík'
+      ],
+      shots: [
+        { img: 'img/molo-lipno/molo-1.jpg', wide: true },
+        { img: 'img/molo-lipno/molo-2.jpg' },
+        { img: 'img/molo-lipno/molo-5.jpg' },
+        { img: 'img/molo-lipno/molo-4.jpg', wide: true },
+        { img: 'img/molo-lipno/molo-3.jpg', wide: true }
+      ]
+    },
     'live-district': {
+      web: 'https://livedistrict.cz/',
       desc: [
         'Live District is a booking and management agency for the current Czech rap scene. The website had one job: make a roster of street artists feel as sharp and professional as the music business they are stepping into — without losing any of the edge.',
         'I designed and built the whole thing front to back. A full-bleed hero video sets the tone, a bold Helvetica-driven type system carries the artists\' names, and every act gets its own page — bio, links and video — held together by one consistent black-and-white identity.',
         'Beyond the look, it is a real working site: a live event calendar, the full artist roster, a booking inquiry form, and image loading that adapts to the visitor\'s connection speed. Design and code, shipped as one.'
       ],
-      shots: [
-        { img: 'img/live-district/ld-home.jpg', wide: true },
-        { img: 'img/live-district/ld-artists.jpg', wide: true },
-        { img: 'img/live-district/ld-dorian.jpg', wide: true },
-        { img: 'img/live-district/ld-events.jpg', wide: true },
-        { img: 'img/live-district/ld-team.jpg', wide: true },
-        { img: 'img/live-district/ld-booking.jpg', wide: true }
-      ]
-    },
-    'cihlak': {
-      desc: [
-        'Cihlák Open Air is an open-air electronic festival built inside an old brickworks — three stages of drum & bass, techno and "peklo". The whole identity starts from the most literal thing on site: a brick. I squared it off to a 2:1 block and pixelated it into a rough, hand-built mark.',
-        'From that logo I built a loud, colour-coded system — one colour per stage — running across a poster, a folded programme booklet and a full set of social graphics, all leaning into the raw industrial texture of the venue instead of hiding it.',
-        'The identity stretches all the way to merch, down to a pair of pixel-logo socks, so the festival reads as one world — from the wall of the brickworks to what you wear home. Concept, logo, print and social, start to finish.'
+      credits: [
+        'Website by Ondřej Hladík',
+        'Logo by Tadeáš Vávra'
       ],
       shots: [
-        { img: 'img/cihlak/cihlak-poster.jpg', wide: true },
-        { img: 'img/cihlak/cihlak-brick.jpg' },
-        { img: 'img/cihlak/cihlak-peklo.jpg' },
-        { img: 'img/cihlak/cihlak-logo.jpg', wide: true },
-        { img: 'img/cihlak/cihlak-booklet.jpg' },
-        { img: 'img/cihlak/cihlak-4.jpg' },
-        { img: 'img/cihlak/cihlak-7.jpg', wide: true },
-        { img: 'img/cihlak/cihlak-live.jpg' },
-        { img: 'img/cihlak/cihlak-couch.jpg' },
-        { img: 'img/cihlak/cihlak-5.jpg', wide: true }
+        { img: 'img/live-district/ld-mockup.jpg', wide: true },
+        { img: 'img/live-district/ld-roster.jpg' },
+        { img: 'img/live-district/ld-logo-tile.svg' },
+        { video: 'img/live-district/ld-recording.mp4', wide: true },
+        { img: 'img/live-district/ld-dorian-page.jpg', wide: true }
+      ]
+    },
+    'font-design': {
+      desc: [
+        'A display typeface of my own, drawn from the ground up — uppercase alphabet, numerals and the punctuation needed to set a headline. Antikva bones with the contrast pushed until the serifs read as blunt slabs rather than fine hairlines.',
+        'The specimen poster tests it the way the face is meant to be used: one letterform blown up until it stops being a letter and turns into a shape, with the full character set set small inside it. Printed large and mounted in a park — the honest way to find out whether a display face holds together at distance.'
+      ],
+      shots: [
+        { img: 'img/font-design/poster-mockup.jpg', wide: true }
       ]
     },
     'solaris': {
@@ -716,6 +728,17 @@
         details.appendChild(ul);
         creditsEl.appendChild(details);
       }
+
+      if (data.web) {
+        const link = document.createElement('a');
+        link.className = 'pmodal__web';
+        link.href = data.web;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.setAttribute('data-cursor', 'hover');
+        link.textContent = 'web: ' + data.web.replace(/^https?:\/\//, '').replace(/\/$/, '');
+        creditsEl.appendChild(link);
+      }
     }
 
     function open(slug, card) {
@@ -749,11 +772,49 @@
   }
 
   /* ---------------------------------------------------------
+     TEAM — same overlay treatment as a project, opened from
+     the menu link instead of a card.
+  --------------------------------------------------------- */
+  function initTeamModal() {
+    const modal = document.querySelector('[data-tmodal]');
+    if (!modal) return;
+    const openers = document.querySelectorAll('a[href="#team"]');
+    if (!openers.length) return;
+    const closers = modal.querySelectorAll('[data-tmodal-close]');
+    const scrollEl = modal.querySelector('[data-tmodal-scroll]');
+    let lastFocused = null;
+
+    function open() {
+      lastFocused = document.activeElement;
+      body.classList.add('pmodal-open');
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      if (scrollEl) scrollEl.scrollTop = 0;
+      const first = modal.querySelector('[data-tmodal-close]');
+      if (first) first.focus();
+    }
+
+    function close() {
+      if (!modal.classList.contains('is-open')) return;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      body.classList.remove('pmodal-open');
+      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+    }
+
+    openers.forEach((a) => {
+      a.addEventListener('click', (e) => { e.preventDefault(); open(); });
+    });
+    closers.forEach((b) => b.addEventListener('click', close));
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  }
+
+  /* ---------------------------------------------------------
      BOOT
   --------------------------------------------------------- */
   function boot() {
     initTitleReveal(); runIntro(); initMailbug(); initReveal(); initNav(); initMenu();
-    initClock(); initProgress(); initMagnetic(); initMisc(); initProjectModal();
+    initClock(); initProgress(); initMagnetic(); initMisc(); initProjectModal(); initTeamModal();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();

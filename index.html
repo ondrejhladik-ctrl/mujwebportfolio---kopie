@@ -49,8 +49,6 @@
         <img src="logo.svg" class="nav__logo-mark" alt="ho" />
       </a>
 
-      <span class="nav__center">SELECTED WORK</span>
-
       <button class="nav__burger" data-burger aria-label="Open menu" aria-expanded="false">
         <span></span><span></span>
       </button>
@@ -67,10 +65,75 @@
   </div>
 
   <main id="top">
-    <!-- ===================== PROJECTS (coming soon) ===================== -->
+    <!-- ===================== PROJECTS (mangoshake-style grid) ===================== -->
     <section class="projects" id="work">
-      <div class="projects__coming">
-        <h2 class="projects__coming-title" data-title>projekty coming soon!</h2>
+      <div class="projects__grid">
+        <!-- TIP: nahraď prázdný <div class="pcard__media"> za <div class="pcard__media"><img class="pcard__img" src="img/projekt.jpg" alt=""></div> -->
+        <article class="pcard reveal">
+          <a class="pcard__link" href="#" data-project="masaze" data-cursor="view" aria-label="Masáže Kostelec — Brand Identity">
+            <div class="pcard__media"><img class="pcard__img" src="img/masaze/massage-hands.jpg" alt="Masáže Kostelec — brand identity" /></div>
+            <div class="pcard__meta">
+              <span class="pcard__title">Masáže Kostelec</span>
+            </div>
+          </a>
+        </article>
+
+        <article class="pcard reveal">
+          <a class="pcard__link" href="#" data-project="molo-lipno" data-cursor="view" aria-label="Molo Lipno — Photography">
+            <div class="pcard__media"><img class="pcard__img" src="img/molo-lipno/molo-5.jpg" alt="Molo Lipno — interior photography" /></div>
+            <div class="pcard__meta">
+              <span class="pcard__title">Molo Lipno</span>
+            </div>
+          </a>
+        </article>
+
+        <article class="pcard pcard--wide pcard--banner reveal">
+          <a class="pcard__link" href="#" data-project="live-district" data-cursor="view" aria-label="Live District — Web">
+            <div class="pcard__media"><img class="pcard__img" src="img/live-district/ld-logo.svg" alt="Live District — logo" /></div>
+            <div class="pcard__meta">
+              <span class="pcard__title">Live District</span>
+            </div>
+          </a>
+        </article>
+
+        <!-- HIDDEN until the real font export replaces the screenshot — delete these
+             two comment lines to bring the card back:
+        <article class="pcard reveal">
+          <a class="pcard__link" href="#" data-project="font-design" data-cursor="view" aria-label="Font design — Typography">
+            <div class="pcard__media"><img class="pcard__img" src="img/font-design/poster-mockup.jpg" alt="Font design — type specimen poster" /></div>
+            <div class="pcard__meta">
+              <span class="pcard__title">Font design</span>
+            </div>
+          </a>
+        </article>
+        -->
+
+        <article class="pcard reveal">
+          <a class="pcard__link" href="#" data-project="form-void" data-cursor="view" aria-label="Form and Void — Editorial">
+            <div class="pcard__media"></div>
+            <div class="pcard__meta">
+              <span class="pcard__title">Form &amp; Void</span>
+            </div>
+          </a>
+        </article>
+
+        <article class="pcard reveal">
+          <a class="pcard__link" href="#" data-project="noir-type" data-cursor="view" aria-label="Noir Type — Typography">
+            <div class="pcard__media"></div>
+            <div class="pcard__meta">
+              <span class="pcard__title">Noir Type</span>
+            </div>
+          </a>
+        </article>
+
+        <article class="pcard reveal">
+          <a class="pcard__link" href="#" data-project="pulse-festival" data-cursor="view" aria-label="Pulse Festival — Branding">
+            <div class="pcard__media"></div>
+            <div class="pcard__meta">
+              <span class="pcard__title">Pulse Festival</span>
+            </div>
+          </a>
+        </article>
       </div>
     </section>
 
@@ -78,7 +141,7 @@
     <section class="contact" id="contact">
       <div class="contact__body">
         <h2 class="contact__title" data-title>GET IN TOUCH</h2>
-        <a href="mailto:ondrej.hladik@icloud.com" class="contact__mail" data-cursor="hover" data-magnetic>ondrej.hladik@icloud.com</a>
+        <a href="mailto:ondrej.hladik@ohdesign.eu" class="contact__mail" data-cursor="hover" data-magnetic>ondrej.hladik@ohdesign.eu</a>
       </div>
     </section>
   </main>
@@ -87,14 +150,43 @@
   <footer class="footer">
     <div class="footer__grid">
       <div class="footer__brand">
-        <img src="logo.svg" class="footer__logo" alt="Ondřej Hladík" />
+        <!-- inlined so the mark can take currentColor (same grey as the socials) -->
+        <svg class="footer__logo" viewBox="0 0 379.86 510.59" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ondřej Hladík" fill="currentColor">
+          <g font-family="Georgia-Italic, Georgia" font-style="italic">
+            <text font-size="393.82" transform="translate(14.72 333.35)"><tspan x="0" y="0">h</tspan></text>
+            <text font-size="335.79" transform="translate(0 408.77) scale(2.11 1)"><tspan x="0" y="0">o</tspan></text>
+          </g>
+        </svg>
       </div>
       <div class="footer__socials">
-        <a href="https://www.instagram.com/onhl.design/" target="_blank" rel="noopener noreferrer" data-cursor="hover">INSTAGRAM</a>
-        <a href="https://www.linkedin.com/in/ond%C5%99ej-hlad%C3%ADk-58a496394/" target="_blank" rel="noopener noreferrer" data-cursor="hover">LINKEDIN</a>
+        <a href="https://www.instagram.com/ohdesign.eu/" target="_blank" rel="noopener" data-cursor="hover">INSTAGRAM</a>
+        <a href="#" data-cursor="hover">LINKEDIN</a>
       </div>
     </div>
   </footer>
+
+  <!-- ===================== TEAM (opens from the menu) ===================== -->
+  <div class="pmodal" data-tmodal role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="tmodal-title">
+    <button class="pmodal__close" type="button" data-tmodal-close aria-label="Close team">✕</button>
+    <button class="pmodal__back" type="button" data-tmodal-close aria-label="Back">Back</button>
+    <div class="pmodal__scroll" data-tmodal-scroll>
+      <header class="pmodal__head">
+        <h2 class="pmodal__title" id="tmodal-title">Team</h2>
+      </header>
+
+      <div class="team__grid">
+        <article class="team__member">
+          <img class="team__photo" src="img/team/ondrej.jpg" alt="Ondřej Hladík" loading="lazy" />
+          <p class="team__role">CEO, Graphic designer, Web designer, Photographer</p>
+          <p class="team__name">Ondřej Hladík</p>
+          <div class="team__contact">
+            <a href="mailto:ondrej.hladik@ohdesign.eu" data-cursor="hover">ondrej.hladik@ohdesign.eu</a>
+            <a href="tel:+420777071179" data-cursor="hover">+420 777 071 179</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
 
   <!-- ===================== PROJECT DETAIL (opens on card click) ===================== -->
   <div class="pmodal" data-pmodal role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pmodal-title">
