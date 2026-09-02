@@ -628,41 +628,6 @@
       shots: [
         { img: 'img/font-design/poster-mockup.jpg', wide: true }
       ]
-    },
-    'solaris': {
-      desc: [
-        'Solaris is a poster series exploring light, heat and gravity through type alone. Each sheet pushes a single idea to its loudest possible form.',
-        'Printed large-format, the set was designed to work as a rhythm — no sheet survives on its own, but together they read as one continuous signal.'
-      ],
-      shots: [{ art: 'art--1', wide: true }, { art: 'art--6' }, { art: 'art--2' }, { art: 'art--5', wide: true }]
-    },
-    'form-void': {
-      desc: [
-        'Form & Void is an editorial project about the space between things — the margins, the pauses, the empty page that gives the words room to breathe.',
-        'The layout treats the grid as a character in the story, opening and collapsing to pace the reader through the argument.'
-      ],
-      shots: [{ art: 'art--5', wide: true }, { art: 'art--3' }, { art: 'art--2' }, { art: 'art--1', wide: true }]
-    },
-    'atlas': {
-      desc: [
-        'Atlas is a website concept for a studio that maps places most people never visit. The interface behaves like a field notebook — quiet, precise, a little worn in.',
-        'Every interaction was designed to reward slow reading, trading flashy transitions for typography that carries the whole experience.'
-      ],
-      shots: [{ art: 'art--2', wide: true }, { art: 'art--3' }, { art: 'art--6' }, { art: 'art--4', wide: true }]
-    },
-    'noir-type': {
-      desc: [
-        'Noir Type is a display typeface drawn for headlines that want to feel like the last line of a detective novel — sharp, confident, slightly dangerous.',
-        'The family ships in three weights, each cut to hold its shape at billboard scale and still behave at the size of a caption.'
-      ],
-      shots: [{ art: 'art--5', wide: true }, { art: 'art--1' }, { art: 'art--3' }, { art: 'art--6', wide: true }]
-    },
-    'pulse-festival': {
-      desc: [
-        'Pulse Festival is a branding system for a two-day music event, built to survive stage lights, wristbands, phone screens and a very long night.',
-        'The mark was designed as a beat you can redraw by hand, so the whole crew could keep the identity alive long after the files were handed over.'
-      ],
-      shots: [{ art: 'art--6', wide: true }, { art: 'art--2' }, { art: 'art--1' }, { art: 'art--4', wide: true }]
     }
   };
 
