@@ -3,34 +3,88 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#000000" />
+  <meta name="theme-color" content="#F4F1EA" />
 
-  <title>Ondřej Hladík — Graphic Designer / Portfolio</title>
-  <meta name="description" content="Portfolio of Ondřej Hladík. Graphic design student based in Prague — visual identities, posters, editorial, web and typography." />
+  <title>ohdesign studio</title>
+  <meta name="description" content="ohdesign studio — graphic and web design studio of Ondřej Hladík in Prague. Brand identity, websites, posters, typography and photography." />
+  <link rel="canonical" href="https://ohdesign.eu/" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="author" content="Ondřej Hladík" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Ondřej Hladík — Graphic Designer / Portfolio" />
-  <meta property="og:description" content="Graphic design student based in Prague. Identity, posters, editorial, web." />
+  <meta property="og:site_name" content="ohdesign studio" />
+  <meta property="og:url" content="https://ohdesign.eu/" />
+  <meta property="og:title" content="ohdesign studio" />
+  <meta property="og:description" content="Graphic and web design studio of Ondřej Hladík in Prague — brand identity, websites, posters, typography and photography." />
+  <meta property="og:image" content="https://ohdesign.eu/img/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="ohdesign studio — the oh logo on coral" />
   <meta property="og:locale" content="en_GB" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ohdesign studio" />
+  <meta name="twitter:description" content="Graphic and web design studio of Ondřej Hladík in Prague — brand identity, websites, posters, typography and photography." />
+  <meta name="twitter:image" content="https://ohdesign.eu/img/og.png" />
 
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="icon-512.png" type="image/png" sizes="512x512" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
+  <!-- fonts are self-hosted (fonts/) — no round-trip to Google Fonts -->
+  <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="css/styles.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://ohdesign.eu/#studio",
+        "name": "ohdesign studio",
+        "alternateName": ["ohdesign", "OH Design", "oh design", "ohdesign.eu"],
+        "url": "https://ohdesign.eu/",
+        "logo": "https://ohdesign.eu/icon-512.png",
+        "image": "https://ohdesign.eu/img/og.png",
+        "description": "Graphic and web design studio of Ondřej Hladík in Prague — brand identity, websites, posters, typography and photography.",
+        "email": "ondrej.hladik@ohdesign.eu",
+        "telephone": "+420777071179",
+        "founder": { "@id": "https://ohdesign.eu/#ondrej" },
+        "address": { "@type": "PostalAddress", "addressLocality": "Prague", "addressCountry": "CZ" },
+        "areaServed": "CZ",
+        "knowsAbout": ["graphic design", "brand identity", "web design", "typography", "poster design", "photography"],
+        "sameAs": ["https://www.instagram.com/ohdesign.eu/"]
+      },
+      {
+        "@type": "Person",
+        "@id": "https://ohdesign.eu/#ondrej",
+        "name": "Ondřej Hladík",
+        "jobTitle": "Graphic & web designer",
+        "url": "https://ohdesign.eu/",
+        "email": "ondrej.hladik@ohdesign.eu",
+        "image": "https://ohdesign.eu/img/team/ondrej.jpg",
+        "worksFor": { "@id": "https://ohdesign.eu/#studio" },
+        "sameAs": ["https://www.instagram.com/ohdesign.eu/"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://ohdesign.eu/#website",
+        "url": "https://ohdesign.eu/",
+        "name": "ohdesign studio",
+        "inLanguage": "en",
+        "publisher": { "@id": "https://ohdesign.eu/#studio" }
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
   <div class="grain" aria-hidden="true"></div>
   <div class="progress" data-progress aria-hidden="true"></div>
 
-  <!-- floating project preview (follows cursor over work rows) -->
-  <div class="preview" data-preview aria-hidden="true"><img class="preview__img" src="img/beetle-1.svg" alt="" /></div>
-
   <!-- beetle that points its head toward the contact e-mail while hovering it -->
-  <img class="mailbug" data-mailbug src="img/beetle-1.svg" alt="" aria-hidden="true" />
+  <img class="mailbug" data-mailbug data-src="img/beetle-1.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='52'/%3E" width="52" height="52" alt="" aria-hidden="true" />
 
   <!-- intro / loader — "oh" morphs into the logo -->
   <div class="intro" aria-hidden="true">
@@ -45,8 +99,8 @@
   <!-- ===================== NAV ===================== -->
   <header class="nav" data-nav>
     <div class="nav__inner">
-      <a href="#top" class="nav__logo" data-cursor="hover" data-magnetic aria-label="Ondřej Hladík — home">
-        <img src="logo.svg" class="nav__logo-mark" alt="ho" />
+      <a href="#top" class="nav__logo" data-cursor="hover" data-magnetic aria-label="ohdesign studio — home">
+        <img src="logo.svg" class="nav__logo-mark" width="30" height="40" alt="ho" />
       </a>
 
       <button class="nav__burger" data-burger aria-label="Open menu" aria-expanded="false">
@@ -66,12 +120,20 @@
 
   <main id="top">
     <!-- ===================== PROJECTS (mangoshake-style grid) ===================== -->
+    <!-- page H1 for search engines + screen readers only (the logo is the visual "title") -->
+    <h1 class="sr-only">ohdesign studio — Ondřej Hladík, graphic &amp; web design, Prague</h1>
+
     <section class="projects" id="work">
       <div class="projects__grid">
         <!-- TIP: nahraď prázdný <div class="pcard__media"> za <div class="pcard__media"><img class="pcard__img" src="img/projekt.jpg" alt=""></div> -->
         <article class="pcard reveal">
           <a class="pcard__link" href="#" data-project="masaze" data-cursor="view" aria-label="Masáže Kostelec — Brand Identity">
-            <div class="pcard__media"><img class="pcard__img" src="img/masaze/massage-hands.jpg" alt="Masáže Kostelec — brand identity" /></div>
+            <div class="pcard__media">
+              <picture>
+                <source type="image/webp" srcset="img/masaze/massage-hands-720.webp 720w, img/masaze/massage-hands-900.webp 900w, img/masaze/massage-hands-1200.webp 1200w, img/masaze/massage-hands.webp 1800w" sizes="(max-width: 720px) calc(100vw - 2.2rem), (max-width: 1600px) 46vw, 740px" />
+                <img class="pcard__img" src="img/masaze/massage-hands.jpg" width="1800" height="1200" alt="Masáže Kostelec — brand identity by ohdesign studio" fetchpriority="high" decoding="async" />
+              </picture>
+            </div>
             <div class="pcard__meta">
               <span class="pcard__title">Masáže Kostelec</span>
             </div>
@@ -80,7 +142,12 @@
 
         <article class="pcard reveal">
           <a class="pcard__link" href="#" data-project="molo-lipno" data-cursor="view" aria-label="Molo Lipno — Photography">
-            <div class="pcard__media"><img class="pcard__img" src="img/molo-lipno/molo-5.jpg" alt="Molo Lipno — interior photography" /></div>
+            <div class="pcard__media">
+              <picture>
+                <source type="image/webp" srcset="img/molo-lipno/molo-5-720.webp 720w, img/molo-lipno/molo-5-900.webp 900w, img/molo-lipno/molo-5-1200.webp 1200w, img/molo-lipno/molo-5.webp 1800w" sizes="(max-width: 720px) calc(100vw - 2.2rem), (max-width: 1600px) 46vw, 740px" />
+                <img class="pcard__img" src="img/molo-lipno/molo-5.jpg" width="1800" height="1200" alt="Molo Lipno — interior photography" decoding="async" />
+              </picture>
+            </div>
             <div class="pcard__meta">
               <span class="pcard__title">Molo Lipno</span>
             </div>
@@ -89,7 +156,7 @@
 
         <article class="pcard pcard--wide pcard--banner reveal">
           <a class="pcard__link" href="#" data-project="live-district" data-cursor="view" aria-label="Live District — Web">
-            <div class="pcard__media"><img class="pcard__img" src="img/live-district/ld-logo.svg" alt="Live District — logo" /></div>
+            <div class="pcard__media"><img class="pcard__img" src="img/live-district/ld-logo.svg" width="1800" height="462" alt="Live District — website design and development" decoding="async" /></div>
             <div class="pcard__meta">
               <span class="pcard__title">Live District</span>
             </div>
@@ -100,7 +167,7 @@
              two comment lines to bring the card back:
         <article class="pcard reveal">
           <a class="pcard__link" href="#" data-project="font-design" data-cursor="view" aria-label="Font design — Typography">
-            <div class="pcard__media"><img class="pcard__img" src="img/font-design/poster-mockup.jpg" alt="Font design — type specimen poster" /></div>
+            <div class="pcard__media"><img class="pcard__img" src="img/font-design/poster-mockup.webp" width="1200" height="900" alt="Font design — type specimen poster" loading="lazy" decoding="async" /></div>
             <div class="pcard__meta">
               <span class="pcard__title">Font design</span>
             </div>
@@ -131,6 +198,7 @@
             <text font-size="335.79" transform="translate(0 408.77) scale(2.11 1)"><tspan x="0" y="0">o</tspan></text>
           </g>
         </svg>
+        <span class="footer__name">ohdesign © <span data-year>2026</span></span>
       </div>
       <div class="footer__socials">
         <a href="https://www.instagram.com/ohdesign.eu/" target="_blank" rel="noopener" data-cursor="hover">INSTAGRAM</a>
@@ -150,7 +218,7 @@
 
       <div class="team__grid">
         <article class="team__member">
-          <img class="team__photo" src="img/team/ondrej.jpg" alt="Ondřej Hladík" loading="lazy" />
+          <img class="team__photo" data-src="img/team/ondrej.webp" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='853'/%3E" width="640" height="853" alt="Ondřej Hladík" decoding="async" />
           <p class="team__role">CEO, Graphic designer, Web designer, Photographer</p>
           <p class="team__name">Ondřej Hladík</p>
           <div class="team__contact">

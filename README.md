@@ -1,78 +1,58 @@
-# Portfolio — Ondřej Hladík
+# ohdesign studio — portfolio Ondřeje Hladíka
 
-Statický, ručně postavený portfoliový web pro prezentaci grafických prací.
-Bez build kroku, bez frameworků — stačí otevřít `index.html`.
+Statický, ručně postavený portfoliový web (**ohdesign.eu**). Bez build kroku,
+bez frameworků — stačí otevřít `index.html`.
 
-**Minimalistický dark editorial styl:** černé pozadí, krémový text, jediný korálový
-akcent, a **brouci** jako vizuální motiv (bílí na černé). Obsah v angličtině.
-Dva fonty: **Space Grotesk** (grotesk) + **Georgia** (antikva/serif — stejné jako logo „ho").
+Světlý „paper" styl (krémové pozadí, inkoustový text, jediný korálový akcent),
+obsah v angličtině. Dva fonty: **Space Grotesk** (self-hosted ve `fonts/`)
++ **Georgia** (stejná jako logo „ho").
 
 ```
 mujwebportfolio/
-├─ index.html        # struktura a obsah
-├─ css/styles.css    # design systém (barvy, typografie, layout)
-├─ js/main.js        # interakce (scramble, word-reveal, filtry, náhled…)
-├─ logo.svg          # logo „ho" (bílé, do navigace)
-├─ favicon.svg       # favicon (černo-bílý)
+├─ index.html            # struktura, obsah, SEO meta + JSON-LD
+├─ css/styles.css        # design systém (@font-face, barvy, typografie, layout)
+├─ js/main.js            # interakce (intro loader, reveal, menu, modaly projektů + týmu)
+├─ fonts/                # Space Grotesk (variable, woff2, latin + latin-ext)
+├─ logo.svg / favicon.svg
+├─ apple-touch-icon.png / icon-512.png
+├─ robots.txt / sitemap.xml
 └─ img/
-   ├─ beetle-1.svg   # brouk 1  ← PLACEHOLDER, vyměň za svůj
-   ├─ beetle-2.svg   # brouk 2  ← PLACEHOLDER
-   └─ beetle-3.svg   # brouk 3  ← PLACEHOLDER
+   ├─ og.png             # náhled pro sdílení (Facebook, LinkedIn, iMessage…)
+   ├─ <projekt>/*.jpg    # originály
+   ├─ <projekt>/*.webp   # zmenšené verze pro web (generované z originálů)
+   └─ team/ondrej.webp
 ```
 
 ## Spuštění
 Dvojklik na `index.html`, nebo lokální server:
 ```bash
-npx serve .          # nebo: python -m http.server
+python -m http.server 8765   # http://127.0.0.1:8765
 ```
 
-## 🪲 Brouci — vyměnit za tvoje
-Teď jsou tam moje **placeholdery**. Nahraď je svými:
-1. V Illustratoru dej **File → Export → Export As → SVG** (u každého brouka).
-   Ideálně černá výplň na průhledném pozadí (web si je sám obarví na bílo).
-2. Ulož jako `img/beetle-1.svg`, `img/beetle-2.svg`, `img/beetle-3.svg`
-   (přepiš stávající soubory — nemusíš měnit žádný kód).
+## Přidání projektu
+1. Karta v `index.html` uvnitř `.projects__grid` (zkopíruj existující `<article class="pcard">`).
+   Do `data-project="slug"` dej klíč projektu.
+2. Texty, galerie a odkaz na web patří do objektu `PROJECTS` v `js/main.js`
+   (`desc`, `credits`, `shots: [{ img: 'img/slug/foto.webp', wide: true }]`, `web`).
+3. Obrázky ukládej jako **WebP** (kvalita ~80, max. 1800 px na šířku) — u karet
+   na homepage přidej i varianty 720/900/1200 px do `srcset`.
 
-Brouci se používají na 3 místech (vše řízené v CSS/JS, není potřeba zasahovat):
-- **Hero** — velký brouk jako vodoznak vpravo (`.hero__beetle`, průhlednost `opacity: .10`).
-- **Náhled u kurzoru** — po najetí na projekt vyjede brouk (cyklí 1 → 2 → 3).
-- **Marquee** — malí brouci jako oddělovače.
+## SEO (co je hotové a co dělat dál)
+- `<title>`, meta description, canonical, Open Graph + Twitter card, JSON-LD
+  (`ProfessionalService` ohdesign studio + `Person` Ondřej Hladík), `robots.txt`, `sitemap.xml`.
+- Po každém nasazení: v **Google Search Console** → „Kontrola URL" → *Požádat o indexaci*.
+- Značku piš všude stejně: **ohdesign studio** (Instagram bio, LinkedIn, e-mailový podpis)
+  a odkazuj z nich na https://ohdesign.eu/.
 
-> Bílé zobrazení dělá CSS `filter: invert(1)` — proto exportuj brouky **černé**.
-> (Zdroj `BROUK 1.ai` mám, ale .ai neumím převést — proto potřebuju SVG export.)
-
-## Další úpravy
-
-### Projekty (tabulka)
-Každý projekt je řádek `<a class="work-row">` v `index.html`:
-```html
-<a href="#" class="work-row" data-cat="identita" data-art="art--1">
-  <span class="work-row__title">Mangrove</span>
-  <span class="work-row__desc">Popis projektu…</span>
-  <span class="work-row__cat mono">IDENTITY</span>
-  <span class="work-row__arrow">↗</span>
-</a>
-```
-- `data-cat` musí sedět s filtrem nahoře (`identita`, `plakaty`, `editorial`, `web`, `typografie`).
-- `data-art` řídí, který brouk vyjede v náhledu (číslo → cyklí přes 3 brouky).
-
-### Barvy
+## Barvy
 Vše v `:root` na začátku `css/styles.css`:
 ```css
 --coral: #FF5436;   /* jediný akcent */
---bg:    #000000;   /* pozadí */
---fg:    #F4F1EA;   /* text */
+--bg:    #F4F1EA;   /* pozadí */
+--fg:    #17140E;   /* text */
 ```
 
-### Texty a odkazy
-- Hero, About, Contact — přímo v HTML.
-- Sociální sítě — nahraď `href="#"` skutečnými URL.
-- Fotka v About — nahraď `<figure class="about__photo">` za `<img class="about__img" src="img/portrait.jpg">`.
-
-## Funkce
-Scramble nadpisy · scroll word-reveal · náhled brouka u kurzoru · filtry projektů ·
-vlastní kurzor · magnetická tlačítka · marquee · scroll progress · respektuje
-`prefers-reduced-motion` · plně responzivní.
-
 ## Nasazení
-Statické soubory — **Netlify, Vercel, GitHub Pages, Cloudflare Pages** (drag & drop).
+Web běží na **GitHub Pages** z repozitáře `mujwebportfolio---kopie` (složka
+`mujwebportfolio - kopie`, `CNAME` = ohdesign.eu). Po úpravách zkopíruj soubory
+do této složky (kromě `CNAME` a `.git`) a v GitHub Desktop udělej commit + push.
