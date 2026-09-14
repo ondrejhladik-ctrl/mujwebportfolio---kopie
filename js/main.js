@@ -105,24 +105,34 @@
   }
 
   /* ---------------------------------------------------------
-     MAIL BEETLE — follows cursor, head always aimed at the e-mail
+     BEETLE — follows the cursor over any [data-bug] target (e-mail,
+     project names), head always aimed at the target; the number picks the art
   --------------------------------------------------------- */
   function initMailbug() {
     if (!fine) return;
     const bug = document.querySelector('[data-mailbug]');
-    const mail = document.querySelector('.contact__mail');
-    if (!bug || !mail) return;
-    const OFF = 56; // sit a bit below the cursor so the head aims up at the mail
-    let mx = innerWidth / 2, my = innerHeight / 2, bx = mx, by = my, on = false;
-    // the beetle art is only fetched the first time it is actually needed
-    if (bug.dataset.src) { const load = () => { bug.src = bug.dataset.src; delete bug.dataset.src; }; mail.addEventListener('mouseenter', load, { once: true }); }
-    mail.addEventListener('mouseenter', () => { on = true; bx = mx; by = my + OFF; bug.classList.add('is-on'); });
-    mail.addEventListener('mouseleave', () => { on = false; bug.classList.remove('is-on'); });
+    const targets = document.querySelectorAll('[data-bug]');
+    if (!bug || !targets.length) return;
+    // which artwork belongs to which data-bug number; 1 = e-mail, 2/3 alternate over the project list
+    const ART = { 1: 'img/beetle-1.svg', 2: 'img/beetle-2.png', 3: 'img/beetle-3.png' };
+    const OFF = 56; // sit a bit below the cursor so the head aims up at the target (same for e-mail and project names)
+    let mx = innerWidth / 2, my = innerHeight / 2, bx = mx, by = my, on = false, target = null;
+    const used = new Set([...targets].map((t) => t.dataset.bug));
+    // fetch only the beetles this page actually uses, and only once the page is idle
+    setTimeout(() => used.forEach((k) => { if (ART[k]) { const im = new Image(); im.src = ART[k]; } }), 1500);
+    targets.forEach((el) => {
+      el.addEventListener('mouseenter', () => {
+        const kind = el.dataset.bug;
+        if (bug.dataset.kind !== kind && ART[kind]) { bug.src = ART[kind]; bug.dataset.kind = kind; }
+        target = el; on = true; bx = mx; by = my + OFF; bug.classList.add('is-on');
+      });
+      el.addEventListener('mouseleave', () => { on = false; target = null; bug.classList.remove('is-on'); });
+    });
     addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
     (function loop() {
-      if (on) {
+      if (on && target) {
         bx += (mx - bx) * 0.2; by += ((my + OFF) - by) * 0.2;
-        const r = mail.getBoundingClientRect();
+        const r = target.getBoundingClientRect();
         const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
         // beetle art points "up" by default → offset by +90°
         const ang = Math.atan2(cy - by, cx - bx) * 180 / Math.PI + 90;
@@ -225,10 +235,29 @@
      "shots" for real images: { img: 'img/xy.webp', wide: true }.
   --------------------------------------------------------- */
   const PROJECTS = {
+    'skola': {
+      web: 'https://newhow.archi/cs/projekty/novy-pavilon-zs-kostelec-u-krizku-kostelec-u-krizku-2020/',
+      webLabel: 'newhow.archi/cs',   // shown instead of the full URL
+      desc: [
+        'The primary school in Kostelec u Křížků is getting a new pavilion — a dining hall and a gym designed by NEW HOW architekti, tucked behind the old school with a roofline of three gables stepping down into the garden. The architects planned a plain white facade; my job was to give it a story.',
+        'I drew the village’s history as a set of line pictograms: Benedictine monks visiting Kalifáč, the laying of the foundation stone of St Martin’s rotunda and the rotunda itself, Josef Ringhoffer’s first copper hammer mill on the Kamenice brook, and horses that traded farm work for sport. One violet, one continuous outline per scene, with a few solid accents — so the whole wall reads as a single drawing wrapping around the windows.',
+        'The rearing horse became the mark of the set: a solid version that stands on its own, in the same violet and the acid yellow-green of the presentation.'
+      ],
+      credits: [
+        'Illustrations by Ondřej Hladík',
+        'Architecture & visualisation by NEW HOW architekti'
+      ],
+      shots: [
+        { img: 'img/skola/skola-elevation.webp', wide: true },
+        { img: 'img/skola/skola-horse.webp' },
+        { img: 'img/skola/skola-render-1200.webp' },
+        { img: 'img/skola/skola-sheet.webp', wide: true }
+      ]
+    },
     'masaze': {
       web: 'https://masazekostelec.cz/',
       desc: [
-        'Masáže Kostelec is a small massage studio run by Jana Hladíková — a mobile masseuse who brings reconditioning and relaxation massage to wherever you feel most at ease. The brief was to give that calm, personal service a visual identity of its own.',
+        'Massage Kostelec is a small massage studio run by Jana Hladíková — a mobile masseuse who brings reconditioning and relaxation massage to wherever you feel most at ease. The brief was to give that calm, personal service a visual identity of its own.',
         'The identity grows from one quiet mark — a sun rising over a soft wave — that carries the studio\'s promise: awakening body and mind through touch. Around it sits a warm, earthy palette of cream, terracotta and olive, with a gentle lowercase wordmark that never raises its voice.',
         'I carried that mood across the whole system — business cards, gift vouchers and print — and shot the photography to match: low, honest light, a single orchid, and the stillness of the treatment room. Every piece is meant to feel the way a good massage does: unhurried, warm and calm.'
       ],
@@ -303,14 +332,14 @@
     const creditsEl = modal.querySelector('[data-pm-credits]');
     const scrollEl = modal.querySelector('[data-pmodal-scroll]');
     const closers = modal.querySelectorAll('[data-pmodal-close]');
-    const links = document.querySelectorAll('.pcard__link');
+    const links = document.querySelectorAll('a[data-project]');
     if (!links.length) return;
     let lastFocused = null;
 
     function fill(slug, card) {
-      const titleNode = card.querySelector('.pcard__title');
+      const titleNode = card.querySelector('.pcard__title') || card;
       const data = PROJECTS[slug] || {};
-      titleEl.textContent = titleNode ? titleNode.textContent.trim() : 'Project';
+      titleEl.textContent = titleNode.textContent.trim() || 'Project';
 
       introEl.innerHTML = '';
       const desc = data.desc || ['A closer look at this project is coming soon.'];
@@ -364,7 +393,7 @@
         link.target = '_blank';
         link.rel = 'noopener';
         link.setAttribute('data-cursor', 'hover');
-        link.textContent = 'web: ' + data.web.replace(/^https?:\/\//, '').replace(/\/$/, '');
+        link.textContent = 'web: ' + (data.webLabel || data.web.replace(/^https?:\/\//, '').replace(/\/$/, ''));
         creditsEl.appendChild(link);
       }
     }
@@ -392,6 +421,7 @@
       a.addEventListener('click', (e) => {
         e.preventDefault();
         const card = a.closest('.pcard') || a;
+        const bug = document.querySelector('[data-mailbug]'); if (bug) bug.classList.remove('is-on');
         open(a.getAttribute('data-project') || '', card);
       });
     });

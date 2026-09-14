@@ -86,7 +86,7 @@ em { font-style: italic; }
 .progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; z-index: 9700; background: var(--coral); transition: width .1s linear; }
 
 /* ---------- Mail beetle (points its head at the e-mail) ---------- */
-.mailbug { position: fixed; top: 0; left: 0; z-index: 45; width: 52px; height: auto; pointer-events: none; opacity: 0; transform: translate(-50%, -50%) rotate(0deg); transition: opacity .35s var(--ease), transform .2s var(--ease); will-change: left, top, transform; }
+.mailbug { position: fixed; top: 0; left: 0; z-index: 45; width: auto; height: 77px; pointer-events: none; opacity: 0; transform: translate(-50%, -50%) rotate(0deg); transition: opacity .35s var(--ease), transform .2s var(--ease); will-change: left, top, transform; }
 .mailbug.is-on { opacity: .95; }
 @media (hover: none), (pointer: coarse) { .mailbug { display: none !important; } }
 
@@ -125,11 +125,34 @@ body.menu-open .menu { clip-path: inset(0 0 0 0); pointer-events: auto; }
 .menu__links a:hover { color: var(--coral); transform: translateX(12px); }
 
 /* =========================================================
+   HOME — blank page, just PROJECTS + the list (same look as the contact block)
+   ========================================================= */
+body.is-home { min-height: 100svh; display: flex; flex-direction: column; }
+/* everything flush left on the page's left margin — the same vertical line as the nav logo and
+   the footer logo: PROJECTS + list, GET IN TOUCH + e-mail */
+body.is-home main { flex: 1; max-width: var(--maxw); width: 100%; margin: 0 auto; padding: 0 var(--pad); text-align: left; }
+body.is-home .contact__body { text-align: left; padding-left: 0; padding-right: 0; margin: 0; max-width: none; }
+/* PROJECTS sits centred in the first screen, GET IN TOUCH follows below it as on the work page */
+.home { min-height: 74svh; display: grid; align-items: center; justify-items: start; }
+.home__body { padding: clamp(6rem,14vh,9rem) 0 clamp(2rem,5vw,4rem); }
+/* Georgia Italic, lowercase — the same face as the "oh" logo */
+.home__title { font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: var(--step-4); letter-spacing: -.01em; text-transform: lowercase; line-height: 1; }
+.plist { list-style: none; margin-top: clamp(1.6rem,4vw,2.6rem); display: flex; flex-direction: column; align-items: flex-start; gap: .25em; }
+/* .plist__link shares the e-mail link's declarations below (.contact__mail) — same look, same hover */
+.plist__link { text-transform: lowercase; transition: transform .35s var(--ease); }
+.plist__link:hover { transform: translateX(12px); }   /* slides right on hover (the e-mail keeps its magnetic pull) */
+
+/* =========================================================
    CONTACT
    ========================================================= */
 .contact__body { max-width: var(--maxw); margin: 0 auto; padding: clamp(5rem,11vw,9rem) var(--pad) clamp(4rem,9vw,8rem); text-align: center; }
 .contact__title { font-family: var(--font-sans); font-weight: 600; font-size: var(--step-4); letter-spacing: -.03em; text-transform: uppercase; line-height: .92; }
-.contact__mail { display: inline-block; margin-top: clamp(1.6rem,4vw,2.6rem); font-family: var(--font-sans); font-weight: 500; font-size: clamp(1.1rem,3vw,1.9rem); letter-spacing: -.01em; }
+.contact__mail, .plist__link { display: inline-block; font-family: var(--font-sans); font-weight: 500; font-size: clamp(1.1rem,3vw,1.9rem); letter-spacing: -.01em; }
+/* hairline underline that draws in from the left on hover — project names, e-mail, pinned web link */
+.contact__mail, .plist__link, .pmodal__web { position: relative; }
+.contact__mail::after, .plist__link::after, .pmodal__web::after { content: ""; position: absolute; left: 0; right: 0; bottom: .08em; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
+.contact__mail:hover::after, .plist__link:hover::after, .pmodal__web:hover::after { transform: scaleX(1); }
+.contact__mail { margin-top: clamp(1.6rem,4vw,2.6rem); }
 .contact__socials { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(1.2rem,4vw,3rem); margin-top: clamp(2rem,4vw,3rem); color: var(--fg-dim); }
 .contact__socials a { transition: color .3s; }
 .contact__socials a:hover { color: var(--coral); }
@@ -156,7 +179,6 @@ body.menu-open .menu { clip-path: inset(0 0 0 0); pointer-events: auto; }
 .footer__grid { max-width: var(--maxw); margin: 0 auto; padding: clamp(2rem,4vw,3rem) var(--pad); display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
 .footer__brand { display: flex; align-items: center; gap: .8rem; color: var(--fg-dim); }
 .footer__logo { height: clamp(46px,5vw,64px); width: auto; color: var(--fg-dim); fill: currentColor; }
-.footer__name { font-family: var(--font-sans); font-weight: 600; font-size: var(--step-0); letter-spacing: .01em; text-transform: lowercase; color: var(--fg-dim); }
 .footer__socials { display: flex; flex-wrap: wrap; gap: clamp(1.2rem,3vw,2.4rem); color: var(--fg-dim); font-family: var(--font-sans); font-weight: 600; font-size: var(--step-0); letter-spacing: .01em; text-transform: lowercase; }
 .footer__socials a { transition: color .3s; }
 .footer__socials a:hover { color: var(--coral); }
@@ -244,8 +266,10 @@ body.pmodal-open { overflow: hidden; }
 .pcard--banner .pcard__media { aspect-ratio: 1800 / 462; background: #fff; }
 .pcard__beetle { width: 30%; height: auto; filter: invert(1); opacity: .9; transition: transform .8s var(--ease); }
 .pcard--wide .pcard__beetle { width: 17%; }
-.pcard__media > picture { display: block; width: 100%; height: 100%; }
-.pcard__img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+/* picture/img are pinned to the media box so `object-fit: cover` always gets a definite height
+   (a plain height:100% chain does not resolve inside <picture> and the image overflowed) */
+.pcard__media > picture { position: absolute; inset: 0; display: block; }
+.pcard__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
 .pcard__link:hover .pcard__media { border-color: var(--fg-dim); }
 .pcard__link:hover .pcard__beetle, .pcard__link:hover .pcard__img { transform: scale(1.05); }
 .pcard__meta { margin-top: 1.1rem; }
@@ -264,7 +288,6 @@ body.pmodal-open { overflow: hidden; }
    ========================================================= */
 @media (max-width: 540px) {
   .footer__grid { flex-direction: column; text-align: center; }
-  .footer__brand { flex-direction: column; }
 }
 
 /* ---------- Reduced motion ---------- */

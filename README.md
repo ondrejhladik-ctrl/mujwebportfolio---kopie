@@ -9,7 +9,8 @@ obsah v angličtině. Dva fonty: **Space Grotesk** (self-hosted ve `fonts/`)
 
 ```
 mujwebportfolio/
-├─ index.html            # struktura, obsah, SEO meta + JSON-LD
+├─ index.html            # HOMEPAGE — jen PROJECTS + seznam názvů (klik otevře detail), SEO meta + JSON-LD
+├─ work.html             # WORK — mřížka projektů + GET IN TOUCH (z menu „Work“)
 ├─ css/styles.css        # design systém (@font-face, barvy, typografie, layout)
 ├─ js/main.js            # interakce (intro loader, reveal, menu, modaly projektů + týmu)
 ├─ fonts/                # Space Grotesk (variable, woff2, latin + latin-ext)
@@ -18,6 +19,8 @@ mujwebportfolio/
 ├─ robots.txt / sitemap.xml
 └─ img/
    ├─ og.png             # náhled pro sdílení (Facebook, LinkedIn, iMessage…)
+   ├─ beetle-1.svg       # brouk u e-mailu (zatím placeholder)
+   ├─ beetle-2.png / beetle-3.png  # brouci u názvů projektů na HP (střídají se ob jeden), @full = originály
    ├─ <projekt>/*.jpg    # originály
    ├─ <projekt>/*.webp   # zmenšené verze pro web (generované z originálů)
    └─ team/ondrej.webp
@@ -30,8 +33,8 @@ python -m http.server 8765   # http://127.0.0.1:8765
 ```
 
 ## Přidání projektu
-1. Karta v `index.html` uvnitř `.projects__grid` (zkopíruj existující `<article class="pcard">`).
-   Do `data-project="slug"` dej klíč projektu.
+1. Karta ve `work.html` uvnitř `.projects__grid` (zkopíruj existující `<article class="pcard">`)
+   a řádek do seznamu `.plist` v `index.html` (`data-bug` střídej 2 / 3). Do `data-project="slug"` dej klíč projektu.
 2. Texty, galerie a odkaz na web patří do objektu `PROJECTS` v `js/main.js`
    (`desc`, `credits`, `shots: [{ img: 'img/slug/foto.webp', wide: true }]`, `web`).
 3. Obrázky ukládej jako **WebP** (kvalita ~80, max. 1800 px na šířku) — u karet

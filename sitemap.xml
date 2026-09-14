@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://ohdesign.eu/</loc>
-    <lastmod>2026-09-11</lastmod>
+    <lastmod>2026-09-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -11,8 +11,12 @@
       <image:title>ohdesign studio — Ondřej Hladík</image:title>
     </image:image>
     <image:image>
+      <image:loc>https://ohdesign.eu/img/skola/skola-cover.jpg</image:loc>
+      <image:title>Primary School Painting — school mural illustrations by ohdesign studio</image:title>
+    </image:image>
+    <image:image>
       <image:loc>https://ohdesign.eu/img/masaze/massage-hands.jpg</image:loc>
-      <image:title>Masáže Kostelec — brand identity by ohdesign studio</image:title>
+      <image:title>Massage Kostelec — brand identity by ohdesign studio</image:title>
     </image:image>
     <image:image>
       <image:loc>https://ohdesign.eu/img/molo-lipno/molo-5.jpg</image:loc>
@@ -22,5 +26,11 @@
       <image:loc>https://ohdesign.eu/img/live-district/ld-mockup.jpg</image:loc>
       <image:title>Live District — website by ohdesign studio</image:title>
     </image:image>
+  </url>
+  <url>
+    <loc>https://ohdesign.eu/work.html</loc>
+    <lastmod>2026-09-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>
