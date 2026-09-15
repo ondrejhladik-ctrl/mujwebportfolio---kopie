@@ -44,6 +44,8 @@ python -m http.server 8765   # http://127.0.0.1:8765
 - `<title>`, meta description, canonical, Open Graph + Twitter card, JSON-LD
   (`ProfessionalService` ohdesign studio + `Person` Ondřej Hladík), `robots.txt`, `sitemap.xml`.
 - Po každém nasazení: v **Google Search Console** → „Kontrola URL" → *Požádat o indexaci*.
+- Do sekce **Soubory Sitemap** patří jedině `sitemap.xml` (ne `work.html` ani jiná stránka —
+  GSC pak hlásí „Soubor Sitemap je ve formátu HTML"). Stačí odeslat jednou.
 - Značku piš všude stejně: **ohdesign studio** (Instagram bio, LinkedIn, e-mailový podpis)
   a odkazuj z nich na https://ohdesign.eu/.
 
