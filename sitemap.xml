@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://ohdesign.eu/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -12,7 +12,7 @@
     </image:image>
     <image:image>
       <image:loc>https://ohdesign.eu/img/skola/skola-cover.jpg</image:loc>
-      <image:title>Primary School — school mural illustrations by ohdesign studio</image:title>
+      <image:title>Primary School Mural — illustrations by ohdesign studio</image:title>
     </image:image>
     <image:image>
       <image:loc>https://ohdesign.eu/img/masaze/massage-hands.jpg</image:loc>
@@ -23,13 +23,17 @@
       <image:title>Molo Lipno — interior photography by ohdesign studio</image:title>
     </image:image>
     <image:image>
+      <image:loc>https://ohdesign.eu/img/objecta/objecta-cover.jpg</image:loc>
+      <image:title>Objecta Visual Art by ohdesign studio</image:title>
+    </image:image>
+    <image:image>
       <image:loc>https://ohdesign.eu/img/live-district/ld-mockup.jpg</image:loc>
       <image:title>Live District — website by ohdesign studio</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://ohdesign.eu/work.html</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

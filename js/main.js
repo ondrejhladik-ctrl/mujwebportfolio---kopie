@@ -293,6 +293,27 @@
         { img: 'img/molo-lipno/molo-3.webp', wide: true }
       ]
     },
+    'objecta': {
+      web: 'https://youtu.be/GiTxhZwwnjs',
+      webPrefix: 'video',
+      webLabel: 'youtube.com',
+      desc: [
+        'Objecta Visual Art is a self-initiated visual experiment that ended up as a short film. One geometric rosette — a star folded out of straight lines — is the only building block; everything else comes from running it through colour, scale and damage.',
+        'The frames are built like collages: hard primaries against black, halftone screens borrowed from print, and glitch textures that look like a file opened in the wrong program. Symmetry holds each frame together while its surface falls apart.',
+        'These are stills from the piece — the whole thing runs as a video.'
+      ],
+      credits: [
+        'Visuals & motion by Ondřej Hladík'
+      ],
+      shots: [
+        { img: 'img/objecta/objecta-1.webp', square: true },
+        { img: 'img/objecta/objecta-2.webp', square: true },
+        { img: 'img/objecta/objecta-3.webp', square: true },
+        { img: 'img/objecta/objecta-4.webp', square: true },
+        { img: 'img/objecta/objecta-5.webp', square: true },
+        { img: 'img/objecta/objecta-6.webp', square: true }
+      ]
+    },
     'live-district': {
       web: 'https://livedistrict.cz/',
       desc: [
@@ -354,7 +375,7 @@
       shots.forEach((shot) => {
         const fig = document.createElement('div');
         const media = shot.img || shot.video;
-        fig.className = 'pmodal__shot' + (media ? ' has-media' : (shot.art ? ' ' + shot.art : '')) + (shot.wide ? ' is-wide' : '');
+        fig.className = 'pmodal__shot' + (media ? ' has-media' : (shot.art ? ' ' + shot.art : '')) + (shot.wide ? ' is-wide' : '') + (shot.square ? ' is-square' : '');
         if (shot.video) {
           const v = document.createElement('video');
           v.src = shot.video; v.autoplay = true; v.loop = true; v.muted = true; v.preload = 'metadata';
@@ -393,7 +414,7 @@
         link.target = '_blank';
         link.rel = 'noopener';
         link.setAttribute('data-cursor', 'hover');
-        link.textContent = 'web: ' + (data.webLabel || data.web.replace(/^https?:\/\//, '').replace(/\/$/, ''));
+        link.textContent = (data.webPrefix || 'web') + ': ' + (data.webLabel || data.web.replace(/^https?:\/\//, '').replace(/\/$/, ''));
         creditsEl.appendChild(link);
       }
     }

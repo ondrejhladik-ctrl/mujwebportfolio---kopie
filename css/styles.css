@@ -138,8 +138,8 @@ body.is-home .contact__body { text-align: left; padding-left: 0; padding-right: 
 /* Georgia Italic, lowercase — the same face as the "oh" logo */
 .home__title { font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: var(--step-4); letter-spacing: -.01em; text-transform: lowercase; line-height: 1; }
 .plist { list-style: none; margin-top: clamp(1.6rem,4vw,2.6rem); display: flex; flex-direction: column; align-items: flex-start; gap: .25em; }
-/* .plist__link shares the e-mail link's declarations below (.contact__mail) — same look, same hover */
-.plist__link { text-transform: lowercase; transition: transform .35s var(--ease); }
+/* .plist__link shares the e-mail link's declarations below (.contact__mail) — same size, same hover */
+.plist__link { text-transform: lowercase; padding: .14em .2em; background: var(--coral); color: var(--on-accent); transition: transform .35s var(--ease); }
 .plist__link:hover { transform: translateX(12px); }   /* slides right on hover (the e-mail keeps its magnetic pull) */
 
 /* =========================================================
@@ -152,6 +152,8 @@ body.is-home .contact__body { text-align: left; padding-left: 0; padding-right: 
 .contact__mail, .plist__link, .pmodal__web { position: relative; }
 .contact__mail::after, .plist__link::after, .pmodal__web::after { content: ""; position: absolute; left: 0; right: 0; bottom: .08em; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
 .contact__mail:hover::after, .plist__link:hover::after, .pmodal__web:hover::after { transform: scaleX(1); }
+/* the hairline sits on the coral, so keep it off the box edge */
+.plist__link::after { left: .2em; right: .2em; bottom: .12em; }
 .contact__mail { margin-top: clamp(1.6rem,4vw,2.6rem); }
 .contact__socials { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(1.2rem,4vw,3rem); margin-top: clamp(2rem,4vw,3rem); color: var(--fg-dim); }
 .contact__socials a { transition: color .3s; }
@@ -213,6 +215,7 @@ body.pmodal-open { overflow: hidden; }
 .pmodal__shot.has-media.is-wide { aspect-ratio: auto; }
 .pmodal__shot.has-media img, .pmodal__shot.has-media video { display: block; width: 100%; }
 .pmodal__shot.has-media:not(.is-wide) img, .pmodal__shot.has-media:not(.is-wide) video { height: 100%; object-fit: cover; }
+.pmodal__shot.has-media.is-square { aspect-ratio: 1; }   /* square artwork keeps its own frame */
 .pmodal__shot.has-media.is-wide img, .pmodal__shot.has-media.is-wide video { height: auto; }
 
 @media (max-width: 600px) {
