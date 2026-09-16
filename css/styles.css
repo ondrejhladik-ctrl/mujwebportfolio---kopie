@@ -109,10 +109,10 @@ html.no-js .intro { display: none; }
 .nav.is-hidden { transform: translateY(-105%); }
 
 .nav__logo { display: inline-flex; align-items: center; gap: .7rem; justify-self: start; }
-.nav__logo-mark { height: 40px; width: auto; filter: invert(1); }
+.nav__logo-mark { height: 40px; width: auto; color: var(--coral); fill: currentColor; }
 
 .nav__burger { display: flex; width: 40px; height: 40px; flex-direction: column; gap: 6px; align-items: center; justify-content: center; justify-self: end; }
-.nav__burger span { display: block; width: 22px; height: 1.5px; background: var(--fg); transition: transform .35s var(--ease); }
+.nav__burger span { display: block; width: 22px; height: 1.5px; background: var(--coral); transition: transform .35s var(--ease); }
 body.menu-open .nav__burger span:nth-child(1) { transform: translateY(3.75px) rotate(45deg); }
 body.menu-open .nav__burger span:nth-child(2) { transform: translateY(-3.75px) rotate(-45deg); }
 
@@ -179,11 +179,11 @@ body.is-home .contact__body { text-align: left; padding-left: 0; padding-right: 
    FOOTER
    ========================================================= */
 .footer__grid { max-width: var(--maxw); margin: 0 auto; padding: clamp(2rem,4vw,3rem) var(--pad); display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
-.footer__brand { display: flex; align-items: center; gap: .8rem; color: var(--fg-dim); }
-.footer__logo { height: clamp(46px,5vw,64px); width: auto; color: var(--fg-dim); fill: currentColor; }
-.footer__socials { display: flex; flex-wrap: wrap; gap: clamp(1.2rem,3vw,2.4rem); color: var(--fg-dim); font-family: var(--font-sans); font-weight: 600; font-size: var(--step-0); letter-spacing: .01em; text-transform: lowercase; }
+.footer__brand { display: flex; align-items: center; gap: .8rem; color: var(--coral); }
+.footer__logo { height: clamp(46px,5vw,64px); width: auto; color: var(--coral); fill: currentColor; }
+.footer__socials { display: flex; flex-wrap: wrap; gap: clamp(1.2rem,3vw,2.4rem); color: var(--coral); font-family: var(--font-sans); font-weight: 600; font-size: var(--step-0); letter-spacing: .01em; text-transform: lowercase; }
 .footer__socials a { transition: color .3s; }
-.footer__socials a:hover { color: var(--coral); }
+.footer__socials a:hover { color: var(--fg); }
 
 /* =========================================================
    PROJECT DETAIL — full-screen overlay (opens on card click)
