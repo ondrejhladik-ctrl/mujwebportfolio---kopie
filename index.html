@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#F4F1EA" />
+  <meta name="theme-color" content="#FF5436" />
 
   <title>ohdesign studio</title>
   <meta name="description" content="ohdesign studio — graphic and web design studio of Ondřej Hladík in Prague. Brand identity, websites, posters, typography and photography." />
@@ -83,7 +83,15 @@
   <div class="grain" aria-hidden="true"></div>
   <div class="progress" data-progress aria-hidden="true"></div>
 
-  <!-- beetle that follows the cursor over the e-mail / project names (art chosen by data-bug) -->
+  <!-- beetle that walks in from the right edge when a project name is hovered (art chosen by data-walk) -->
+  <img class="walkbug" data-walkbug src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='77'/%3E" width="52" height="77" alt="" aria-hidden="true" />
+  <!-- five more beetles that gather around the project preview — sides and spots are picked at random each time -->
+  <img class="swarm" data-swarm="top"    src="img/beetle-3.png" width="480" height="720" alt="" aria-hidden="true" />
+  <img class="swarm" data-swarm="right"  src="img/beetle-2.png" width="386" height="720" alt="" aria-hidden="true" />
+  <img class="swarm" data-swarm="bottom" src="img/beetle-3.png" width="480" height="720" alt="" aria-hidden="true" />
+  <img class="swarm" data-swarm="left"   src="img/beetle-2.png" width="386" height="720" alt="" aria-hidden="true" />
+  <img class="swarm" data-swarm="extra"  src="img/beetle-1.svg" width="376" height="556" alt="" aria-hidden="true" />
+  <!-- beetle that follows the cursor over the e-mail (art chosen by data-bug) -->
   <img class="mailbug" data-mailbug src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='77'/%3E" width="52" height="77" alt="" aria-hidden="true" />
 
   <!-- intro / loader — "oh" morphs into the logo -->
@@ -99,9 +107,9 @@
   <!-- ===================== NAV ===================== -->
   <header class="nav" data-nav>
     <div class="nav__inner">
-      <a href="index.html" class="nav__logo" data-cursor="hover" data-magnetic aria-label="ohdesign studio — home">
+      <a href="index.html" class="nav__logo" data-cursor="hover" data-magnetic>
         <!-- inlined so it can take currentColor (coral) -->
-        <svg class="nav__logo-mark" viewBox="0 0 379.86 510.59" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor">
+        <svg class="nav__logo-mark" viewBox="0 0 379.86 510.59" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ohdesign studio — home" fill="currentColor">
           <g font-family="Georgia-Italic, Georgia" font-style="italic">
             <text font-size="393.82" transform="translate(14.72 333.35)"><tspan x="0" y="0">h</tspan></text>
             <text font-size="335.79" transform="translate(0 408.77) scale(2.11 1)"><tspan x="0" y="0">o</tspan></text>
@@ -132,14 +140,18 @@
     <section class="home" id="work">
       <div class="home__body">
         <h2 class="home__title" data-title>projects</h2>
-        <!-- data-bug alternates 2 / 3 / 2 / 3… → which beetle follows the cursor on hover -->
+        <!-- data-walk alternates 2 / 3 / 2 / 3… → which beetle walks in from the right on hover -->
         <ul class="plist">
-          <li><a href="work.html" class="plist__link" data-project="skola" data-cursor="hover" data-bug="2">primary school mural</a></li>
-          <li><a href="work.html" class="plist__link" data-project="masaze" data-cursor="hover" data-bug="3">massage kostelec</a></li>
-          <li><a href="work.html" class="plist__link" data-project="molo-lipno" data-cursor="hover" data-bug="2">molo lipno</a></li>
-          <li><a href="work.html" class="plist__link" data-project="objecta" data-cursor="hover" data-bug="3">objecta visual art</a></li>
-          <li><a href="work.html" class="plist__link" data-project="live-district" data-cursor="hover" data-bug="2">live district</a></li>
+          <li><a href="work.html" class="plist__link" data-project="skola" data-cursor="hover" data-preview="img/skola/skola-cover-900.webp" data-walk="2">primary school mural</a></li>
+          <li><a href="work.html" class="plist__link" data-project="masaze" data-cursor="hover" data-preview="img/masaze/massage-hands-900.webp" data-walk="3">massage kostelec</a></li>
+          <li><a href="work.html" class="plist__link" data-project="molo-lipno" data-cursor="hover" data-preview="img/molo-lipno/molo-5-900.webp" data-walk="2">molo lipno</a></li>
+          <li><a href="work.html" class="plist__link" data-project="objecta" data-cursor="hover" data-preview="img/objecta/objecta-cover-900.webp" data-walk="3">objecta visual art</a></li>
+          <li><a href="work.html" class="plist__link" data-project="live-district" data-cursor="hover" data-preview="img/live-district/preview-square.webp" data-walk="2">live district</a></li>
         </ul>
+      </div>
+      <!-- preview of the hovered project, right part of the first screen; the beetle walks in from the right edge -->
+      <div class="home__preview" data-home-preview aria-hidden="true">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='3'/%3E" width="900" height="675" alt="" decoding="async" />
       </div>
     </section>
 
@@ -182,7 +194,7 @@
 
       <div class="team__grid">
         <article class="team__member">
-          <img class="team__photo" data-src="img/team/ondrej.webp" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='853'/%3E" width="640" height="853" alt="Ondřej Hladík" decoding="async" />
+          <div class="team__photo-wrap"><img class="team__photo" data-src="img/team/ondrej.webp" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='853'/%3E" width="640" height="853" alt="Ondřej Hladík" decoding="async" /></div>
           <p class="team__role">CEO, Graphic designer, Web designer, Photographer</p>
           <p class="team__name">Ondřej Hladík</p>
           <div class="team__contact">

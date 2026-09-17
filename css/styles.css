@@ -23,20 +23,23 @@
 
 /* ---------- Tokens ---------- */
 :root {
-  --bg:        #F4F1EA;   /* warm white (brand cream) */
-  --bg-2:      #E8E3D8;   /* deeper paper for card media */
-  --panel:     #EDE8DE;
+  /* CORAL EDITION (2026-09-17): the page is brand coral, everything that used to be coral is white.
+     Previous cream palette for reference: --bg #F4F1EA, --bg-2 #E8E3D8, --fg-dim #6B665C, --serif-fg #48443B, --coral #FF5436, --on-accent #FFFFFF */
+  --bg:        #FF5436;   /* brand coral, now the ground */
+  --bg-2:      #F04A2E;   /* slightly deeper coral for card media / gallery frames */
+  --panel:     #F54F33;
   --fg:        #17140E;   /* near-black ink */
-  --fg-dim:    #6B665C;
-  --fg-faint:  #A29D91;
-  --serif-fg:  #48443B;
-  --line:      rgba(23, 20, 14, 0.16);
-  --line-soft: rgba(23, 20, 14, 0.08);
+  --fg-dim:    #3D1A12;   /* dark warm brown — stays legible on coral (≈4.8:1) */
+  --fg-faint:  #7A3A2C;
+  --serif-fg:  #2B1611;   /* modal paragraphs */
+  --line:      rgba(23, 20, 14, 0.18);
+  --line-soft: rgba(23, 20, 14, 0.09);
 
   --violet:    #5227FF;   /* electric violet accent */
   --violet-lift:#6A44FF;
-  --coral:     #FF5436;   /* brand accent */
-  --on-accent: #FFFFFF;
+  --coral:     #FFFFFF;   /* "accent" slot: white on the coral ground (logo, burger, list bars, socials, progress) */
+  --on-accent: #FF5436;   /* text on the ink list bars */
+  --duo:       #FF8A3D;   /* duotone base: every photo goes b&w and multiplies onto this warmer orange */
 
   --font-sans:  'Space Grotesk', 'Segoe UI', sans-serif;
   --font-serif: Georgia, 'Times New Roman', serif;
@@ -71,7 +74,7 @@ img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
 em { font-style: italic; }
-::selection { background: var(--coral); color: #fff; }
+::selection { background: var(--fg); color: var(--bg); }
 
 .mono { font-family: var(--font-sans); font-weight: 500; font-size: var(--step--1); letter-spacing: .06em; }
 
@@ -88,6 +91,17 @@ em { font-style: italic; }
 /* ---------- Mail beetle (points its head at the e-mail) ---------- */
 .mailbug { position: fixed; top: 0; left: 0; z-index: 45; width: auto; height: 77px; pointer-events: none; opacity: 0; transform: translate(-50%, -50%) rotate(0deg); transition: opacity .35s var(--ease), transform .2s var(--ease); will-change: left, top, transform; }
 .mailbug.is-on { opacity: .95; }
+/* the walking beetle for the project list — same art/size, moved by JS along the hovered row */
+.walkbug { position: fixed; top: 0; left: 0; z-index: 45; width: auto; height: 77px; pointer-events: none; opacity: 0; transition: opacity .4s var(--ease); will-change: transform; }
+.walkbug.is-on { opacity: .95; }
+@media (hover: none), (pointer: coarse) { .walkbug { display: none !important; } }
+/* the swarm that gathers around the preview square — positioned by JS, fixed like the other beetles */
+.swarm { position: fixed; top: 0; left: 0; z-index: 46; width: auto; height: 64px; pointer-events: none; opacity: 0; transition: opacity .35s var(--ease); will-change: transform; }
+.swarm.is-on { opacity: .95; }
+@media (hover: none), (pointer: coarse) { .swarm { display: none !important; } }
+/* beetles that gather around the cursor while the menu is open and you hesitate (created by JS) */
+.menubug { position: fixed; top: 0; left: 0; z-index: 1000; width: auto; height: 54px; pointer-events: none; opacity: 0; transition: opacity .4s var(--ease); will-change: transform; }
+.menubug.is-on { opacity: .95; }
 @media (hover: none), (pointer: coarse) { .mailbug { display: none !important; } }
 
 /* ---------- Intro ---------- */
@@ -109,20 +123,23 @@ html.no-js .intro { display: none; }
 .nav.is-hidden { transform: translateY(-105%); }
 
 .nav__logo { display: inline-flex; align-items: center; gap: .7rem; justify-self: start; }
-.nav__logo-mark { height: 40px; width: auto; color: var(--coral); fill: currentColor; }
+.nav__logo-mark { height: 40px; width: auto; color: var(--fg); fill: currentColor; }
 
 .nav__burger { display: flex; width: 40px; height: 40px; flex-direction: column; gap: 6px; align-items: center; justify-content: center; justify-self: end; }
-.nav__burger span { display: block; width: 22px; height: 1.5px; background: var(--coral); transition: transform .35s var(--ease); }
+.nav__burger span { display: block; width: 22px; height: 1.5px; background: var(--fg); transition: transform .35s var(--ease); }
 body.menu-open .nav__burger span:nth-child(1) { transform: translateY(3.75px) rotate(45deg); }
 body.menu-open .nav__burger span:nth-child(2) { transform: translateY(-3.75px) rotate(-45deg); }
 
 /* mobile menu */
 .menu { position: fixed; inset: 0; z-index: 999; background: var(--bg); padding: clamp(6rem,18vw,9rem) var(--pad) var(--pad); display: flex; flex-direction: column; justify-content: space-between; clip-path: inset(0 0 100% 0); transition: clip-path .6s var(--ease); pointer-events: none; }
 body.menu-open .menu { clip-path: inset(0 0 0 0); pointer-events: auto; }
-.menu__links { display: flex; flex-direction: column; gap: .3rem; }
+.menu__links { display: flex; flex-direction: column; align-items: flex-start; gap: .3rem; }   /* links only as wide as their text */
 .menu__links a { font-family: var(--font-sans); font-weight: 600; font-size: clamp(2.2rem, 12vw, 3.6rem); letter-spacing: -.02em; text-transform: uppercase; display: flex; align-items: baseline; gap: 1rem; transition: color .25s, transform .35s var(--ease); }
 .menu__links a i { font-family: var(--font-mono); font-size: .9rem; color: var(--violet); font-style: normal; }
-.menu__links a:hover { color: var(--coral); transform: translateX(12px); }
+.menu__links a { position: relative; }
+.menu__links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: .02em; height: 2px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
+.menu__links a:hover { transform: translateX(12px); }
+.menu__links a:hover::after { transform: scaleX(1); }
 
 /* =========================================================
    HOME — blank page, just PROJECTS + the list (same look as the contact block)
@@ -133,13 +150,25 @@ body.is-home { min-height: 100svh; display: flex; flex-direction: column; }
 body.is-home main { flex: 1; max-width: var(--maxw); width: 100%; margin: 0 auto; padding: 0 var(--pad); text-align: left; }
 body.is-home .contact__body { text-align: left; padding-left: 0; padding-right: 0; margin: 0; max-width: none; }
 /* PROJECTS sits centred in the first screen, GET IN TOUCH follows below it as on the work page */
-.home { min-height: 74svh; display: grid; align-items: center; justify-items: start; }
+.home { position: relative; min-height: 74svh; display: grid; align-items: center; justify-items: start; }
+/* project preview on the right of the first screen — fades/slides in while the beetle walks over */
+/* a square, roughly 60 % across, on the level of the list (JS sets --pv-top to the list's centre) */
+.home__preview { position: absolute; left: 60%; top: var(--pv-top, 50%); width: clamp(200px, 24vw, 360px); aspect-ratio: 1; overflow: hidden; background: var(--bg-2); border: 1px solid var(--line); opacity: 0; transform: translate(4%, -50%); transition: opacity .5s var(--ease), transform .8s var(--ease); pointer-events: none; }
+.home__preview.is-on { opacity: 1; transform: translate(0, -50%); }
+.home__preview { background: var(--duo); }
+.home__preview img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(1) contrast(1.08); mix-blend-mode: multiply; }
+@media (max-width: 720px), (hover: none) { .home__preview { display: none; } }
 .home__body { padding: clamp(6rem,14vh,9rem) 0 clamp(2rem,5vw,4rem); }
 /* Georgia Italic, lowercase — the same face as the "oh" logo */
 .home__title { font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: var(--step-4); letter-spacing: -.01em; text-transform: lowercase; line-height: 1; }
+/* the reveal mask must leave room for the italic descenders (the "j"), so it gets a deeper bottom
+   and the word starts further down so nothing peeks out before the animation */
+.home__title .wmask { padding-bottom: .3em; margin-bottom: -.3em; padding-right: .08em; margin-right: -.08em; }
+.home__title .win { transform: translateY(145%); }
+.home__title.is-revealed .win { transform: translateY(0); }
 .plist { list-style: none; margin-top: clamp(1.6rem,4vw,2.6rem); display: flex; flex-direction: column; align-items: flex-start; gap: .25em; }
 /* .plist__link shares the e-mail link's declarations below (.contact__mail) — same size, same hover */
-.plist__link { text-transform: lowercase; padding: .14em .2em; background: var(--coral); color: var(--on-accent); transition: transform .35s var(--ease); }
+.plist__link { text-transform: lowercase; padding: .14em .2em; background: var(--fg); color: var(--bg); transition: transform .35s var(--ease); }   /* ink block, coral text — same as the footer socials */
 .plist__link:hover { transform: translateX(12px); }   /* slides right on hover (the e-mail keeps its magnetic pull) */
 
 /* =========================================================
@@ -152,12 +181,20 @@ body.is-home .contact__body { text-align: left; padding-left: 0; padding-right: 
 .contact__mail, .plist__link, .pmodal__web { position: relative; }
 .contact__mail::after, .plist__link::after, .pmodal__web::after { content: ""; position: absolute; left: 0; right: 0; bottom: .08em; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
 .contact__mail:hover::after, .plist__link:hover::after, .pmodal__web:hover::after { transform: scaleX(1); }
+/* same eased hairline on the small links: footer socials, team contacts, credits, contact socials */
+.footer__socials a, .team__contact a, .credits > summary, .contact__socials a { position: relative; }
+.team__contact a { display: inline-block; }
+.footer__socials a::after, .team__contact a::after, .credits > summary::after, .contact__socials a::after { content: ""; position: absolute; left: 0; right: 0; bottom: .06em; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
+.footer__socials a::after { left: .2em; right: .2em; bottom: .12em; }
+.footer__socials a:hover::after, .team__contact a:hover::after, .credits > summary:hover::after, .credits[open] > summary::after, .contact__socials a:hover::after { transform: scaleX(1); }
+/* the vertical "back to projects" label: its line runs along the rotated text, so it fades in with the same easing */
+.pmodal__back { text-decoration: underline; text-decoration-color: transparent; text-underline-offset: .16em; text-decoration-thickness: 1px; transition: text-decoration-color .35s var(--ease); }
+.pmodal__back:hover { text-decoration-color: currentColor; }
 /* the hairline sits on the coral, so keep it off the box edge */
 .plist__link::after { left: .2em; right: .2em; bottom: .12em; }
 .contact__mail { margin-top: clamp(1.6rem,4vw,2.6rem); }
 .contact__socials { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(1.2rem,4vw,3rem); margin-top: clamp(2rem,4vw,3rem); color: var(--fg-dim); }
 .contact__socials a { transition: color .3s; }
-.contact__socials a:hover { color: var(--coral); }
 
 /* =========================================================
    TEAM — lives in its own overlay, opened from the menu
@@ -168,22 +205,22 @@ body.is-home .contact__body { text-align: left; padding-left: 0; padding-right: 
 [data-tmodal] .pmodal__head { max-width: var(--maxw); padding-left: 0; }
 .team__grid { max-width: var(--maxw); margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: clamp(2rem,4vw,3.4rem) clamp(1.4rem,3vw,2.6rem); }
 .team__member { display: flex; flex-direction: column; align-items: flex-start; text-transform: lowercase; }
-.team__photo { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border: 1px solid var(--line); margin-bottom: clamp(.9rem,2vw,1.3rem); }
+.team__photo-wrap { width: 100%; aspect-ratio: 3 / 4; overflow: hidden; background: var(--duo); border: 1px solid var(--line); margin-bottom: clamp(.9rem,2vw,1.3rem); }
+.team__photo { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(1) contrast(1.08); mix-blend-mode: multiply; }
 .team__role { font-family: var(--font-sans); font-weight: 600; font-size: var(--step--1); letter-spacing: .01em; color: var(--fg); }
 .team__name { margin-top: .5rem; font-family: var(--font-sans); font-weight: 500; font-size: var(--step--1); letter-spacing: .04em; color: var(--fg-dim); }
 .team__contact { display: flex; flex-direction: column; gap: .3rem; margin-top: .35rem; }
 .team__contact a { font-family: var(--font-sans); font-weight: 500; font-size: var(--step--1); letter-spacing: .04em; color: var(--fg-dim); transition: color .3s; word-break: break-word; }
-.team__contact a:hover { color: var(--coral); }
 
 /* =========================================================
    FOOTER
    ========================================================= */
 .footer__grid { max-width: var(--maxw); margin: 0 auto; padding: clamp(2rem,4vw,3rem) var(--pad); display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
 .footer__brand { display: flex; align-items: center; gap: .8rem; color: var(--coral); }
-.footer__logo { height: clamp(46px,5vw,64px); width: auto; color: var(--coral); fill: currentColor; }
+.footer__logo { height: clamp(46px,5vw,64px); width: auto; color: var(--fg); fill: currentColor; }
 .footer__socials { display: flex; flex-wrap: wrap; gap: clamp(1.2rem,3vw,2.4rem); color: var(--coral); font-family: var(--font-sans); font-weight: 600; font-size: var(--step-0); letter-spacing: .01em; text-transform: lowercase; }
-.footer__socials a { transition: color .3s; }
-.footer__socials a:hover { color: var(--fg); }
+/* black blocks with white text (same construction as the list bars on the homepage) */
+.footer__socials a { padding: .14em .2em; background: var(--fg); color: var(--bg); transition: background .3s, color .3s; }
 
 /* =========================================================
    PROJECT DETAIL — full-screen overlay (opens on card click)
@@ -194,10 +231,9 @@ body.pmodal-open { overflow: hidden; }
 .pmodal__scroll { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; padding: clamp(4rem,8vw,6.5rem) clamp(1.4rem,7vw,7rem) clamp(4rem,9vw,7rem); -webkit-overflow-scrolling: touch; }
 
 .pmodal__close { position: absolute; top: clamp(1rem,2.4vw,1.9rem); right: clamp(1rem,3vw,2.4rem); z-index: 3; width: 48px; height: 48px; display: grid; place-items: center; font-size: 1.6rem; line-height: 1; color: var(--fg); border-radius: 50%; transition: transform .35s var(--ease), color .3s; }
-.pmodal__close:hover { color: var(--coral); transform: rotate(90deg); }
+.pmodal__close:hover { transform: rotate(90deg); }
 
 .pmodal__back { position: absolute; left: clamp(.5rem,1.4vw,1.4rem); top: 50%; z-index: 3; transform: translateY(-50%) rotate(180deg); writing-mode: vertical-rl; font-family: var(--font-sans); font-weight: 600; font-size: var(--step-0); letter-spacing: .01em; text-transform: lowercase; color: var(--fg); transition: color .3s var(--ease); }
-.pmodal__back:hover { color: var(--coral); }
 
 .pmodal__head { text-align: left; max-width: 44rem; margin: 0 auto clamp(2rem,5vw,3.2rem); padding-left: clamp(.75rem,2.5vw,2rem); }
 .pmodal__title { font-family: var(--font-sans); font-weight: 600; font-size: clamp(2.2rem, 12vw, 3.6rem); line-height: 1; letter-spacing: -.02em; text-transform: uppercase; }
@@ -210,10 +246,10 @@ body.pmodal-open { overflow: hidden; }
 .pmodal__shot { aspect-ratio: 4 / 3; border: 1px solid var(--line); overflow: hidden; }
 .pmodal__shot.is-wide { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
 /* real media tiles — half = uniform 4/3 box (cover), wide = full-width natural height; sharp corners */
-.pmodal__shot.has-media { border: 0; background: var(--bg-2); }
+.pmodal__shot.has-media { border: 0; background: var(--duo); }
 .pmodal__shot.has-media:not(.is-wide) { aspect-ratio: 4 / 3; }
 .pmodal__shot.has-media.is-wide { aspect-ratio: auto; }
-.pmodal__shot.has-media img, .pmodal__shot.has-media video { display: block; width: 100%; }
+.pmodal__shot.has-media img, .pmodal__shot.has-media video { display: block; width: 100%; filter: grayscale(1) contrast(1.08); mix-blend-mode: multiply; }
 .pmodal__shot.has-media:not(.is-wide) img, .pmodal__shot.has-media:not(.is-wide) video { height: 100%; object-fit: cover; }
 .pmodal__shot.has-media.is-square { aspect-ratio: 1; }   /* square artwork keeps its own frame */
 .pmodal__shot.has-media.is-wide img, .pmodal__shot.has-media.is-wide video { height: auto; }
@@ -229,11 +265,10 @@ body.pmodal-open { overflow: hidden; }
 .credits { display: inline-block; text-align: left; }
 .credits > summary { display: inline-block; cursor: pointer; list-style: none; font-family: var(--font-sans); font-weight: 600; font-size: var(--step-0); letter-spacing: .01em; text-transform: lowercase; color: var(--fg); padding: .5rem 0; transition: color .3s; }
 .credits > summary::-webkit-details-marker { display: none; }
-.credits > summary:hover, .credits[open] > summary { color: var(--coral); }
+
 .credits__list { list-style: none; display: flex; flex-direction: column; align-items: flex-start; width: 0; margin-top: 1.1rem; gap: .5rem; }
 .credits__list li { font-family: var(--font-sans); font-size: var(--step--1); letter-spacing: .04em; text-transform: lowercase; color: var(--fg); white-space: nowrap; }
 .pmodal__web { margin-left: auto; font-family: var(--font-sans); font-weight: 600; font-size: var(--step-0); letter-spacing: .01em; text-transform: lowercase; color: var(--fg); transition: color .3s; }
-.pmodal__web:hover { color: var(--coral); }
 
 /* gradient fallbacks for a project that has no images yet (see PROJECTS in main.js) */
 .art--1 { background: radial-gradient(120% 120% at 20% 10%, #FF8A5B 0%, #FF5436 38%, #7A1E0C 100%); }
@@ -263,16 +298,16 @@ body.pmodal-open { overflow: hidden; }
 .pcard { grid-column: span 1; }
 .pcard--wide { grid-column: 1 / -1; }
 .pcard__link { display: block; }
-.pcard__media { position: relative; aspect-ratio: 4 / 3; background: var(--bg-2); border: 1px solid var(--line); overflow: hidden; display: grid; place-items: center; transition: border-color .4s; }
+.pcard__media { position: relative; aspect-ratio: 4 / 3; background: var(--duo); border: 1px solid var(--line); overflow: hidden; display: grid; place-items: center; transition: border-color .4s; }
 .pcard--wide .pcard__media { aspect-ratio: 16 / 9; }
 /* banner card — media keeps the proportions of the artwork itself */
-.pcard--banner .pcard__media { aspect-ratio: 1800 / 462; background: #fff; }
+.pcard--banner .pcard__media { aspect-ratio: 1800 / 462; }
 .pcard__beetle { width: 30%; height: auto; filter: invert(1); opacity: .9; transition: transform .8s var(--ease); }
 .pcard--wide .pcard__beetle { width: 17%; }
 /* picture/img are pinned to the media box so `object-fit: cover` always gets a definite height
    (a plain height:100% chain does not resolve inside <picture> and the image overflowed) */
 .pcard__media > picture { position: absolute; inset: 0; display: block; }
-.pcard__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+.pcard__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); filter: grayscale(1) contrast(1.08); mix-blend-mode: multiply; }
 .pcard__link:hover .pcard__media { border-color: var(--fg-dim); }
 .pcard__link:hover .pcard__beetle, .pcard__link:hover .pcard__img { transform: scale(1.05); }
 .pcard__meta { margin-top: 1.1rem; }

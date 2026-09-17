@@ -145,6 +145,374 @@
   }
 
   /* ---------------------------------------------------------
+     WALKING BEETLE + PREVIEW — hover a project name on the homepage:
+     a beetle is sent in from the right edge of the screen and crawls
+     slowly to the end of the coral bar, while the project's picture
+     appears on the right side of the first screen.
+  --------------------------------------------------------- */
+  function initWalkBug() {
+    if (!fine) return;
+    const bug = document.querySelector('[data-walkbug]');
+    const box = document.querySelector('[data-home-preview]');
+    const links = document.querySelectorAll('.plist__link[data-walk]');
+    if (!bug || !links.length) return;
+    const img = box ? box.querySelector('img') : null;
+    const ART = { 2: 'img/beetle-2.png', 3: 'img/beetle-3.png' };
+    const SPEED = 0.42;      // px per ms → ~2.4 s across a 1000 px screen: slow, deliberate
+    const GAP = 46;          // centre of the beetle from the end of the bar (its head ends up ~8 px short of it)
+    let target = null, x = 0, y = 0, fromX = 0, toX = 0, t0 = 0, dur = 0, leaveTimer = null, raf = 0;
+
+    // warm the picture cache once the page is idle so the first hover doesn't flash
+    setTimeout(() => links.forEach((a) => { if (a.dataset.preview) { const im = new Image(); im.src = a.dataset.preview; } }), 1500);
+    setTimeout(() => Object.values(ART).forEach((src) => { const im = new Image(); im.src = src; }), 1800);
+
+    function dest(el) { const r = el.getBoundingClientRect(); return { x: r.right + GAP, y: r.top + r.height / 2 }; }
+    function place(px, py, ang) { bug.style.transform = 'translate(' + px + 'px,' + py + 'px) translate(-50%,-50%) rotate(' + ang + 'deg)'; }
+
+    function loop(now) {
+      if (!target) return;
+      const d = dest(target);
+      const p = dur ? Math.min((now - t0) / dur, 1) : 1;
+      const e = 1 - Math.pow(1 - p, 2);          // ease-out: slows down as it reaches the bar
+      x = fromX + (d.x - fromX) * e;
+      y += (d.y - y) * 0.18;                      // follows the row smoothly when the target changes
+      const walking = p < 1;
+      // art points "up" → -90° faces left; while walking it wobbles like legs working
+      const wobble = walking ? Math.sin(now / 55) * 4 : 0;
+      const bob = walking ? Math.sin(now / 110) * 1.5 : 0;
+      place(x, y + bob, -90 + wobble);
+      raf = requestAnimationFrame(loop);
+    }
+
+    const plist = document.querySelector('.plist'), home = document.querySelector('.home');
+    function placePreview() {
+      if (!box || !plist || !home) return;
+      const l = plist.getBoundingClientRect(), h = home.getBoundingClientRect();
+      box.style.setProperty('--pv-top', (l.top + l.height / 2 - h.top) + 'px');
+    }
+    function send(el) {
+      clearTimeout(leaveTimer);
+      placePreview();
+      const kind = el.dataset.walk;
+      if (bug.dataset.kind !== kind && ART[kind]) { bug.src = ART[kind]; bug.dataset.kind = kind; }
+      const d = dest(el);
+      const wasOn = bug.classList.contains('is-on');
+      if (!wasOn) { x = innerWidth + 80; y = d.y; }   // enter from beyond the right edge, on the row's line
+      fromX = x; toX = d.x; t0 = performance.now();
+      dur = prefersReduced ? 0 : Math.abs(toX - fromX) / SPEED;
+      target = el;
+      bug.classList.add('is-on');
+      if (img && el.dataset.preview) {
+        if (img.getAttribute('src') !== el.dataset.preview) img.src = el.dataset.preview;
+        box.classList.add('is-on');
+      }
+      cancelAnimationFrame(raf); raf = requestAnimationFrame(loop);
+      if (box) swarm.gather(box, el !== swarm.current); swarm.current = el;
+    }
+
+    function leave() {
+      leaveTimer = setTimeout(() => {
+        target = null; cancelAnimationFrame(raf);
+        bug.classList.remove('is-on');
+        if (box) box.classList.remove('is-on');
+        swarm.scatter(); swarm.current = null;
+      }, 160);   // small grace so moving between two rows doesn't blink
+    }
+
+    links.forEach((a) => {
+      a.addEventListener('mouseenter', () => send(a));
+      a.addEventListener('mouseleave', leave);
+      a.addEventListener('focus', () => send(a));
+      a.addEventListener('blur', leave);
+    });
+    // the beetle should not linger over an open project overlay
+    document.addEventListener('click', (e) => { if (e.target.closest('.plist__link')) { clearTimeout(leaveTimer); target = null; bug.classList.remove('is-on'); if (box) box.classList.remove('is-on'); swarm.scatter(); swarm.current = null; } });
+  }
+
+  /* ---------------------------------------------------------
+     SWARM — four beetles come in from the four edges of the screen
+     and settle around the preview square. Change of project or
+     leaving = they scatter back out, then crawl in again.
+  --------------------------------------------------------- */
+  const swarm = (function () {
+    const api = { current: null, gather() {}, scatter() {} };
+    if (!fine) return api;
+    const els = [...document.querySelectorAll('[data-swarm]')];
+    if (!els.length) return api;
+    const SPEED_IN = 0.42, SPEED_OUT = 0.65;  // px per ms — unhurried in, quicker out (the left one has the longest walk)
+    const bugs = els.map((el, i) => ({
+      el, edge: el.dataset.swarm, x: 0, y: 0, tx: 0, ty: 0, speed: SPEED_IN * (0.85 + (i % 3) * 0.12),
+      delay: i * 140, t0: 0, state: 'hidden', ang: 0, box: null, ret: false
+    }));
+    let raf = 0, boxEl = null;
+
+    // every time they come in, each beetle draws a new spot: a side of the square (the first four
+    // sides are shuffled so the square is surrounded, the rest are random), a random point along
+    // that side and a random distance from the edge
+    const SIDES = ['top', 'right', 'bottom', 'left'];
+    function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; }
+    function draw() {
+      const deck = shuffle(SIDES.slice());
+      bugs.forEach((b, i) => {
+        const spot = {
+          side: i < 4 ? deck[i] : SIDES[(Math.random() * 4) | 0],
+          t: 0.12 + Math.random() * 0.76,            // where along the side (12–88 %)
+          off: 28 + Math.random() * 16               // how far outside the edge
+        };
+        b.wob = Math.random() * 7;                   // phase so they don't wobble in unison
+        b.next = spot;
+      });
+      spread(bugs.map((b) => b.next));
+      bugs.forEach((b) => { if (b.state === 'hidden' || b.side === undefined) { b.side = b.next.side; b.t = b.next.t; b.off = b.next.off; } });
+    }
+    // two spots on the same side must be at least MIN_T of the side apart — the later one slides aside
+    const MIN_T = 0.26;
+    function spread(spots) {
+      SIDES.forEach((side) => {
+        const same = spots.filter((p) => p.side === side).sort((a, c) => a.t - c.t);
+        for (let i = 1; i < same.length; i++) {
+          if (same[i].t - same[i - 1].t < MIN_T) {
+            const up = same[i - 1].t + MIN_T;
+            same[i].t = up <= 0.88 ? up : Math.max(0.12, same[i - 1].t - MIN_T);
+          }
+        }
+      });
+    }
+    // where each one rests, facing the square
+    function seat(b, r) {
+      switch (b.side) {
+        case 'top':    return { x: r.left + r.width * b.t,  y: r.top - b.off,     face: 180 };  // head down
+        case 'right':  return { x: r.right + b.off,          y: r.top + r.height * b.t, face: -90 }; // head left
+        case 'bottom': return { x: r.left + r.width * b.t,  y: r.bottom + b.off,  face: 0 };    // head up
+        default:       return { x: r.left - b.off,           y: r.top + r.height * b.t, face: 90 };  // head right
+      }
+    }
+    // where each one comes from / runs to: beyond the viewport edge on its side
+    function gate(b, r) {
+      const s = seat(b, r), m = 90, j = (Math.random() - 0.5) * 240;
+      switch (b.side) {
+        case 'top':    return { x: s.x + j, y: -m };
+        case 'right':  return { x: innerWidth + m, y: s.y + j };
+        case 'bottom': return { x: s.x + j, y: innerHeight + m };
+        default:       return { x: -m, y: s.y + j };
+      }
+    }
+    function place(b, wobble) {
+      b.el.style.transform = 'translate(' + b.x + 'px,' + b.y + 'px) translate(-50%,-50%) rotate(' + (b.ang + wobble) + 'deg)';
+    }
+    function step(b, now, dt) {
+      const dx = b.tx - b.x, dy = b.ty - b.y, dist = Math.hypot(dx, dy);
+      const sp = (b.state === 'out' ? SPEED_OUT : b.speed) * dt;
+      if (dist <= sp) { b.x = b.tx; b.y = b.ty; return true; }
+      b.x += dx / dist * sp; b.y += dy / dist * sp;
+      b.ang = Math.atan2(dy, dx) * 180 / Math.PI + 90;   // art points up → +90 to face the way it walks
+      return false;
+    }
+    function loop(now) {
+      let busy = false;
+      const r = boxEl ? boxEl.getBoundingClientRect() : null;
+      bugs.forEach((b) => {
+        if (b.state === 'hidden') return;
+        busy = true;
+        if (now < b.t0) { place(b, 0); return; }         // staggered start
+        const dt = Math.min(now - (b.last || now), 40); b.last = now;
+        if (b.state === 'in') {
+          if (r) { const s = seat(b, r); b.tx = s.x; b.ty = s.y; }
+          const arrived = step(b, now, dt);
+          if (arrived) { b.state = 'seated'; if (r) b.ang = seat(b, r).face; }
+          place(b, Math.sin(now / 55 + b.wob) * 4);
+        } else if (b.state === 'seated') {
+          if (r) {
+            const crowd = bugs.find((o) => o !== b && o.side === b.side && o.state === 'seated' && Math.abs(o.t - b.t) < MIN_T && o.t <= b.t);
+            if (crowd) {                                   // someone is already sitting here → move along the side
+              const up = crowd.t + MIN_T; b.t = up <= 0.88 ? up : Math.max(0.12, crowd.t - MIN_T);
+              b.state = 'in'; b.last = 0;                  // walk to the free spot
+            } else { const s = seat(b, r); b.x = s.x; b.y = s.y; b.ang = s.face; }   // follows the box if it moves
+          }
+          place(b, 0);
+        } else if (b.state === 'out') {
+          const arrived = step(b, now, dt);
+          place(b, Math.sin(now / 45 + b.wob) * 5);
+          if (arrived) {
+            b.el.classList.remove('is-on');
+            if (b.ret && boxEl) { b.side = b.next.side; b.t = b.next.t; b.off = b.next.off; enter(b, now); } else { b.state = 'hidden'; }
+          }
+        }
+      });
+      if (busy) raf = requestAnimationFrame(loop); else raf = 0;
+    }
+    function enter(b, now) {
+      if (b.side === undefined) draw();            // first ever entry: deal the spots
+      const r = boxEl.getBoundingClientRect(), g = gate(b, r), s = seat(b, r);
+      b.x = g.x; b.y = g.y; b.tx = s.x; b.ty = s.y; b.ret = false;
+      b.state = 'in'; b.t0 = now + b.delay; b.last = 0;
+      b.ang = Math.atan2(s.y - g.y, s.x - g.x) * 180 / Math.PI + 90;
+      place(b, 0); b.el.classList.add('is-on');
+    }
+    api.gather = function (box, changed) {
+      boxEl = box;
+      const now = performance.now();
+      if (changed || bugs.every((b) => b.state === 'hidden')) draw();   // new project or fresh hover → new spots
+      bugs.forEach((b) => {
+        if (b.state === 'hidden') enter(b, now);
+        else if (changed) { b.ret = true; if (b.state !== 'out') runOut(b, now); }   // new project: out first, then back in
+      });
+      if (!raf) raf = requestAnimationFrame(loop);
+    };
+    function runOut(b, now) {
+      const r = boxEl.getBoundingClientRect(), g = gate(b, r);
+      b.tx = g.x; b.ty = g.y; b.state = 'out'; b.t0 = now + b.delay * 0.5; b.last = 0;
+    }
+    api.scatter = function () {
+      const now = performance.now();
+      bugs.forEach((b) => { if (b.state !== 'hidden') { b.ret = false; if (b.state !== 'out') runOut(b, now); } });
+      if (!raf) raf = requestAnimationFrame(loop);
+    };
+    return api;
+  })();
+
+  /* ---------------------------------------------------------
+     MENU BEETLES — while the menu is open, the longer you hesitate
+     the more beetles turn up. They circle the cursor at a distance,
+     never touch it, and keep off the buttons. Click / close → gone.
+  --------------------------------------------------------- */
+  function initMenuBugs() {
+    if (!fine || prefersReduced) return;
+    const menu = document.querySelector('[data-menu]');
+    if (!menu) return;
+    const ART = ['img/beetle-2.png', 'img/beetle-3.png', 'img/beetle-1.svg'];
+    const MAX = 14, FIRST = 1400, RING = 120, KEEP = 78, PAD = 26;
+    let bugs = [], timer = null, raf = 0, open = false, mx = innerWidth / 2, my = innerHeight / 2, last = 0;
+    let gatherEl = null;     // the button being hovered → everyone rushes to it and bumps into its edges
+
+    addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; }, { passive: true });
+    menu.querySelectorAll('a').forEach((a) => {
+      a.addEventListener('mouseenter', () => { gatherEl = a; dealSeats(); });
+      a.addEventListener('mouseleave', () => { gatherEl = null; });
+    });
+    // seats around the hovered button: sides cycle so it gets surrounded, spots spread along each side
+    const SIDES = ['top', 'bottom', 'right', 'left'];
+    function dealSeats() {
+      const perSide = {};
+      bugs.forEach((b, i) => { b.side = SIDES[i % 4]; (perSide[b.side] = perSide[b.side] || []).push(b); });
+      Object.values(perSide).forEach((list) => list.forEach((b, i) => { b.t = (i + 0.5) / list.length + (Math.random() - 0.5) * 0.12; b.off = 14 + Math.random() * 8; b.bumped = false; }));
+    }
+    function seat(b, r) {
+      switch (b.side) {
+        case 'top':    return { x: r.left + r.width * b.t, y: r.top - b.off,    face: 180 };
+        case 'bottom': return { x: r.left + r.width * b.t, y: r.bottom + b.off, face: 0 };
+        case 'right':  return { x: r.right + b.off,        y: r.top + r.height * b.t, face: -90 };
+        default:       return { x: r.left - b.off,         y: r.top + r.height * b.t, face: 90 };
+      }
+    }
+
+    function obstacles() {
+      const els = [...menu.querySelectorAll('a'), document.querySelector('[data-burger]')].filter(Boolean);
+      return els.map((el) => { const r = el.getBoundingClientRect(); return { l: r.left - PAD, t: r.top - PAD, r: r.right + PAD, b: r.bottom + PAD }; });
+    }
+    function spawn() {
+      if (!open || bugs.length >= MAX) return;
+      const el = document.createElement('img');
+      el.className = 'menubug'; el.alt = ''; el.setAttribute('aria-hidden', 'true');
+      el.src = ART[bugs.length % ART.length];
+      document.body.appendChild(el);
+      // come in from a random edge
+      const side = (Math.random() * 4) | 0, m = 80;
+      const b = {
+        el, x: 0, y: 0, px: 0, py: 0,
+        ang: Math.random() * Math.PI * 2,                    // where on the ring around the cursor it wants to be
+        r: RING + Math.random() * 70,                        // its own ring radius
+        spin: (Math.random() < 0.5 ? -1 : 1) * (0.0004 + Math.random() * 0.0007),
+        wob: Math.random() * 7, out: false
+      };
+      if (side === 0) { b.x = Math.random() * innerWidth; b.y = -m; }
+      else if (side === 1) { b.x = innerWidth + m; b.y = Math.random() * innerHeight; }
+      else if (side === 2) { b.x = Math.random() * innerWidth; b.y = innerHeight + m; }
+      else { b.x = -m; b.y = Math.random() * innerHeight; }
+      b.px = b.x; b.py = b.y;
+      bugs.push(b);
+      if (gatherEl) dealSeats();                            // a newcomer during a hover gets a seat too
+      requestAnimationFrame(() => el.classList.add('is-on'));
+      // the next one comes a little sooner each time
+      timer = setTimeout(spawn, Math.max(650, 1300 - bugs.length * 60));
+      if (!raf) raf = requestAnimationFrame(loop);
+    }
+    function loop(now) {
+      const dt = Math.min(now - (last || now), 40); last = now;
+      const obs = obstacles();
+      const gr = gatherEl ? gatherEl.getBoundingClientRect() : null;
+      bugs.forEach((b) => {
+        let tx, ty;
+        if (b.out) { tx = b.ox; ty = b.oy; }
+        else if (gr && b.side) {
+          // rush to the hovered button and bump into its edge (one little shove past the seat, then settle)
+          const st = seat(b, gr); tx = st.x; ty = st.y;
+          b.x += (tx - b.x) * 0.14; b.y += (ty - b.y) * 0.14;
+          if (!b.bumped && Math.hypot(tx - b.x, ty - b.y) < 3) {
+            b.bumped = true;
+            const cx = gr.left + gr.width / 2, cy = gr.top + gr.height / 2, dx = cx - b.x, dy = cy - b.y, d = Math.hypot(dx, dy) || 1;
+            b.x += dx / d * 12; b.y += dy / d * 12;
+          }
+          bugs.forEach((o) => { if (o === b) return; const ex = b.x - o.x, ey = b.y - o.y, e = Math.hypot(ex, ey) || 1; if (e < 40) { b.x += ex / e * (40 - e) * 0.5; b.y += ey / e * (40 - e) * 0.5; } });
+          const vx = b.x - b.px, vy = b.y - b.py, sp = Math.hypot(vx, vy);
+          b.face = sp > 0.6 ? Math.atan2(vy, vx) * 180 / Math.PI + 90 : st.face;   // walking → face the way it goes, seated → face the button
+          b.el.style.transform = 'translate(' + b.x + 'px,' + b.y + 'px) translate(-50%,-50%) rotate(' + (b.face + (sp > 0.6 ? Math.sin(now / 55 + b.wob) * 4 : 0)) + 'deg)';
+          b.px = b.x; b.py = b.y;
+          return;
+        }
+        else {
+          b.ang += b.spin * dt;
+          // aim for a spot on its ring around the cursor — if that spot is over a button, walk round the ring to a free one
+          const dir = b.spin < 0 ? -1 : 1;
+          let k = 0;
+          for (; k < 24; k++) {
+            const a = b.ang + dir * k * Math.PI / 12;
+            tx = mx + Math.cos(a) * b.r; ty = my + Math.sin(a) * b.r;
+            if (!obs.some((o) => tx > o.l && tx < o.r && ty > o.t && ty < o.b)) { if (k) b.ang = a; break; }
+          }
+        }
+        b.x += (tx - b.x) * (b.out ? 0.09 : 0.05);
+        b.y += (ty - b.y) * (b.out ? 0.09 : 0.05);
+        if (!b.out) {
+          // never touch the cursor
+          let dx = b.x - mx, dy = b.y - my, d = Math.hypot(dx, dy) || 1;
+          if (d < KEEP) { b.x = mx + dx / d * KEEP; b.y = my + dy / d * KEEP; }
+          // keep off the buttons: push out of the nearest side of any expanded rect
+          obs.forEach((o) => {
+            if (b.x > o.l && b.x < o.r && b.y > o.t && b.y < o.b) {
+              const dl = b.x - o.l, dr = o.r - b.x, dtp = b.y - o.t, db = o.b - b.y, mn = Math.min(dl, dr, dtp, db);
+              if (mn === dl) b.x = o.l; else if (mn === dr) b.x = o.r; else if (mn === dtp) b.y = o.t; else b.y = o.b;
+            }
+          });
+          // and a little personal space from each other
+          bugs.forEach((o) => { if (o === b) return; const ex = b.x - o.x, ey = b.y - o.y, e = Math.hypot(ex, ey) || 1; if (e < 58) { b.x += ex / e * (58 - e) * 0.5; b.y += ey / e * (58 - e) * 0.5; } });
+        }
+        const vx = b.x - b.px, vy = b.y - b.py, sp = Math.hypot(vx, vy);
+        if (sp > 0.25) b.face = Math.atan2(vy, vx) * 180 / Math.PI + 90;   // art points up → face the way it walks
+        const wob = sp > 0.25 ? Math.sin(now / 55 + b.wob) * 4 : 0;
+        b.el.style.transform = 'translate(' + b.x + 'px,' + b.y + 'px) translate(-50%,-50%) rotate(' + ((b.face || 0) + wob) + 'deg)';
+        b.px = b.x; b.py = b.y;
+      });
+      // remove the ones that made it off screen
+      bugs = bugs.filter((b) => { if (b.out && Math.hypot(b.ox - b.x, b.oy - b.y) < 6) { b.el.remove(); return false; } return true; });
+      if (bugs.length) raf = requestAnimationFrame(loop); else raf = 0;
+    }
+    function start() { if (open) return; open = true; last = 0; clearTimeout(timer); timer = setTimeout(spawn, FIRST); }
+    function stop() {
+      open = false; clearTimeout(timer);
+      bugs.forEach((b) => {                                // run for the nearest edge
+        const m = 90, dL = b.x, dR = innerWidth - b.x, dT = b.y, dB = innerHeight - b.y, mn = Math.min(dL, dR, dT, dB);
+        b.out = true; b.ox = b.x; b.oy = b.y;
+        if (mn === dL) b.ox = -m; else if (mn === dR) b.ox = innerWidth + m; else if (mn === dT) b.oy = -m; else b.oy = innerHeight + m;
+        b.el.classList.remove('is-on');
+      });
+      if (bugs.length && !raf) raf = requestAnimationFrame(loop);
+    }
+    new MutationObserver(() => { if (body.classList.contains('menu-open')) start(); else stop(); })
+      .observe(body, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  /* ---------------------------------------------------------
      REVEAL
   --------------------------------------------------------- */
   function initReveal() {
@@ -493,7 +861,7 @@
      BOOT
   --------------------------------------------------------- */
   function boot() {
-    initTitleReveal(); runIntro(); initMailbug(); initReveal(); initNav(); initMenu();
+    initTitleReveal(); runIntro(); initMailbug(); initWalkBug(); initMenuBugs(); initReveal(); initNav(); initMenu();
     initProgress(); initMagnetic(); initMisc(); initProjectModal(); initTeamModal();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
