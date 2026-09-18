@@ -839,7 +839,9 @@
     if (!openers.length) return;
     const closers = modal.querySelectorAll('[data-tmodal-close]');
     const scrollEl = modal.querySelector('[data-tmodal-scroll]');
-    let lastFocused = null;
+    let lastFocused = null, pushed = false;
+    // the address bar follows the overlay: /team while it is open, back to the page on close (and Back closes it)
+    const teamURL = location.hostname === 'ohdesign.eu' ? '/team' : 'team.html';
 
     function open() {
       lastFocused = document.activeElement;
@@ -850,21 +852,25 @@
       if (scrollEl) scrollEl.scrollTop = 0;
       const first = modal.querySelector('[data-tmodal-close]');
       if (first) first.focus();
+      if (history.pushState) { history.pushState({ team: true }, '', teamURL); pushed = true; }
     }
 
-    function close() {
+    function close(fromHistory) {
       if (!modal.classList.contains('is-open')) return;
       modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden', 'true');
       body.classList.remove('pmodal-open');
       if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+      if (pushed && !fromHistory) history.back();
+      pushed = false;
     }
 
     openers.forEach((a) => {
       a.addEventListener('click', (e) => { e.preventDefault(); open(); });
     });
-    closers.forEach((b) => b.addEventListener('click', close));
-    addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    closers.forEach((b) => b.addEventListener('click', () => close(false)));
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') close(false); });
+    addEventListener('popstate', () => close(true));
   }
 
   /* ---------------------------------------------------------
