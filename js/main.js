@@ -1,12 +1,28 @@
 /* =========================================================
    Ondřej Hladík — Portfolio
    Interactions: title reveal, intro loader, mail beetle,
-   reveal, nav, menu, progress, magnetic, project + team modals
+   reveal, nav, menu, magnetic, project + team modals
    ========================================================= */
 (function () {
   'use strict';
 
   document.documentElement.classList.remove('no-js');
+
+  /* clean URLs: the site links to /work and /team (GitHub Pages serves work.html for /work).
+     · live: if someone lands on …/work.html, tidy the address bar
+     · local preview (Live Server, python http.server): those servers can't resolve /work, so point the links at the .html files */
+  (function () {
+    const live = location.hostname === 'ohdesign.eu';
+    if (live) {
+      if (/\.html$/.test(location.pathname)) history.replaceState(null, '', location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '') + location.hash);
+    } else {
+      document.querySelectorAll('a[href^="/"]').forEach((a) => {
+        const h = a.getAttribute('href');
+        if (h === '/' || h.startsWith('/#')) a.setAttribute('href', 'index.html' + h.slice(1));
+        else if (/^\/(work|team)(#|$)/.test(h)) a.setAttribute('href', h.replace(/^\/(work|team)/, '$1.html'));
+      });
+    }
+  })();
   const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
   const body = document.body;
@@ -571,14 +587,8 @@
   }
 
   /* ---------------------------------------------------------
-     PROGRESS + MAGNETIC + MISC
+     MAGNETIC + MISC
   --------------------------------------------------------- */
-  function initProgress() {
-    const bar = document.querySelector('[data-progress]'); if (!bar) return;
-    function update() { const h = document.documentElement.scrollHeight - innerHeight; bar.style.width = (h > 0 ? (scrollY / h) * 100 : 0) + '%'; }
-    addEventListener('scroll', update, { passive: true }); addEventListener('resize', update); update();
-  }
-
   function initMagnetic() {
     if (!fine || prefersReduced) return;
     document.querySelectorAll('[data-magnetic]').forEach((el) => {
@@ -825,7 +835,7 @@
   function initTeamModal() {
     const modal = document.querySelector('[data-tmodal]');
     if (!modal) return;
-    const openers = document.querySelectorAll('a[href="#team"]');
+    const openers = document.querySelectorAll('a[data-team]');   // real link to team.html; with JS + the overlay present it opens in place
     if (!openers.length) return;
     const closers = modal.querySelectorAll('[data-tmodal-close]');
     const scrollEl = modal.querySelector('[data-tmodal-scroll]');
@@ -862,7 +872,7 @@
   --------------------------------------------------------- */
   function boot() {
     initTitleReveal(); runIntro(); initMailbug(); initWalkBug(); initMenuBugs(); initReveal(); initNav(); initMenu();
-    initProgress(); initMagnetic(); initMisc(); initProjectModal(); initTeamModal();
+    initMagnetic(); initMisc(); initProjectModal(); initTeamModal();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();

@@ -11,6 +11,7 @@ obsah v angličtině. Dva fonty: **Space Grotesk** (self-hosted ve `fonts/`)
 mujwebportfolio/
 ├─ index.html            # HOMEPAGE — jen PROJECTS + seznam názvů (klik otevře detail), SEO meta + JSON-LD
 ├─ work.html             # WORK — mřížka projektů + GET IN TOUCH (z menu „Work“)
+├─ team.html             # TEAM — vlastní stránka (menu ji s JS otevře jako okno, Google ji indexuje)
 ├─ css/styles.css        # design systém (@font-face, barvy, typografie, layout)
 ├─ js/main.js            # interakce (intro loader, reveal, menu, modaly projektů + týmu)
 ├─ fonts/                # Space Grotesk (variable, woff2, latin + latin-ext)
@@ -25,6 +26,10 @@ mujwebportfolio/
    ├─ <projekt>/*.webp   # zmenšené verze pro web (generované z originálů)
    └─ team/ondrej.webp
 ```
+
+## Adresy
+Web používá čisté adresy `/`, `/work`, `/team` (GitHub Pages obslouží `work.html` i jako `/work`).
+V lokálním náhledu (Live Server, `python -m http.server`) si JS odkazy sám přepíše na `.html`, takže fungují taky.
 
 ## Spuštění
 Dvojklik na `index.html`, nebo lokální server:

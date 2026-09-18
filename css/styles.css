@@ -37,7 +37,7 @@
 
   --violet:    #5227FF;   /* electric violet accent */
   --violet-lift:#6A44FF;
-  --coral:     #FFFFFF;   /* "accent" slot: white on the coral ground (logo, burger, list bars, socials, progress) */
+  --coral:     #FFFFFF;   /* "accent" slot: white on the coral ground (hovers only, now that logo/burger/bars/socials went ink) */
   --on-accent: #FF5436;   /* text on the ink list bars */
   --duo:       #FF8A3D;   /* duotone base: every photo goes b&w and multiplies onto this warmer orange */
 
@@ -84,9 +84,6 @@ em { font-style: italic; }
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   mix-blend-mode: multiply; opacity: 0.035;
 }
-
-/* ---------- Scroll progress ---------- */
-.progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; z-index: 9700; background: var(--coral); transition: width .1s linear; }
 
 /* ---------- Mail beetle (points its head at the e-mail) ---------- */
 .mailbug { position: fixed; top: 0; left: 0; z-index: 45; width: auto; height: 77px; pointer-events: none; opacity: 0; transform: translate(-50%, -50%) rotate(0deg); transition: opacity .35s var(--ease), transform .2s var(--ease); will-change: left, top, transform; }
@@ -213,6 +210,13 @@ body.is-home .contact__body { text-align: left; padding-left: 0; padding-right: 
 .team__contact a { font-family: var(--font-sans); font-weight: 500; font-size: var(--step--1); letter-spacing: .04em; color: var(--fg-dim); transition: color .3s; word-break: break-word; }
 
 /* =========================================================
+   TEAM PAGE (team.html) — same title treatment as the homepage
+   ========================================================= */
+.teampage { max-width: var(--maxw); margin: 0 auto; padding: clamp(6rem,14vh,9rem) var(--pad) clamp(4rem,9vw,7rem); }
+.teampage .home__title { margin-bottom: clamp(1.6rem,4vw,2.6rem); }
+.teampage .team__grid { margin: 0; }
+
+/* =========================================================
    FOOTER
    ========================================================= */
 .footer__grid { max-width: var(--maxw); margin: 0 auto; padding: clamp(2rem,4vw,3rem) var(--pad); display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
@@ -246,10 +250,10 @@ body.pmodal-open { overflow: hidden; }
 .pmodal__shot { aspect-ratio: 4 / 3; border: 1px solid var(--line); overflow: hidden; }
 .pmodal__shot.is-wide { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
 /* real media tiles — half = uniform 4/3 box (cover), wide = full-width natural height; sharp corners */
-.pmodal__shot.has-media { border: 0; background: var(--duo); }
+.pmodal__shot.has-media { border: 0; background: var(--bg-2); }   /* the project gallery stays in full colour */
 .pmodal__shot.has-media:not(.is-wide) { aspect-ratio: 4 / 3; }
 .pmodal__shot.has-media.is-wide { aspect-ratio: auto; }
-.pmodal__shot.has-media img, .pmodal__shot.has-media video { display: block; width: 100%; filter: grayscale(1) contrast(1.08); mix-blend-mode: multiply; }
+.pmodal__shot.has-media img, .pmodal__shot.has-media video { display: block; width: 100%; }
 .pmodal__shot.has-media:not(.is-wide) img, .pmodal__shot.has-media:not(.is-wide) video { height: 100%; object-fit: cover; }
 .pmodal__shot.has-media.is-square { aspect-ratio: 1; }   /* square artwork keeps its own frame */
 .pmodal__shot.has-media.is-wide img, .pmodal__shot.has-media.is-wide video { height: auto; }

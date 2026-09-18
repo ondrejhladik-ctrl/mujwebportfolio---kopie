@@ -81,7 +81,6 @@
 
 <body class="is-home">
   <div class="grain" aria-hidden="true"></div>
-  <div class="progress" data-progress aria-hidden="true"></div>
 
   <!-- beetle that walks in from the right edge when a project name is hovered (art chosen by data-walk) -->
   <img class="walkbug" data-walkbug src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='77'/%3E" width="52" height="77" alt="" aria-hidden="true" />
@@ -107,7 +106,7 @@
   <!-- ===================== NAV ===================== -->
   <header class="nav" data-nav>
     <div class="nav__inner">
-      <a href="index.html" class="nav__logo" data-cursor="hover" data-magnetic>
+      <a href="/" class="nav__logo" data-cursor="hover" data-magnetic>
         <!-- inlined so it can take currentColor (coral) -->
         <svg class="nav__logo-mark" viewBox="0 0 379.86 510.59" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ohdesign studio — home" fill="currentColor">
           <g font-family="Georgia-Italic, Georgia" font-style="italic">
@@ -126,8 +125,8 @@
   <!-- menu (opens from hamburger) -->
   <div class="menu" data-menu>
     <nav class="menu__links" aria-label="Navigation">
-      <a href="work.html">Work</a>
-      <a href="#team">Team</a>
+      <a href="/work">Work</a>
+      <a href="/team" data-team>Team</a>
       <a href="#contact">Get in touch</a>
     </nav>
   </div>
@@ -142,11 +141,11 @@
         <h2 class="home__title" data-title>projects</h2>
         <!-- data-walk alternates 2 / 3 / 2 / 3… → which beetle walks in from the right on hover -->
         <ul class="plist">
-          <li><a href="work.html" class="plist__link" data-project="skola" data-cursor="hover" data-preview="img/skola/skola-cover-900.webp" data-walk="2">primary school mural</a></li>
-          <li><a href="work.html" class="plist__link" data-project="masaze" data-cursor="hover" data-preview="img/masaze/massage-hands-900.webp" data-walk="3">massage kostelec</a></li>
-          <li><a href="work.html" class="plist__link" data-project="molo-lipno" data-cursor="hover" data-preview="img/molo-lipno/molo-5-900.webp" data-walk="2">molo lipno</a></li>
-          <li><a href="work.html" class="plist__link" data-project="objecta" data-cursor="hover" data-preview="img/objecta/objecta-cover-900.webp" data-walk="3">objecta visual art</a></li>
-          <li><a href="work.html" class="plist__link" data-project="live-district" data-cursor="hover" data-preview="img/live-district/preview-square.webp" data-walk="2">live district</a></li>
+          <li><a href="/work" class="plist__link" data-project="skola" data-cursor="hover" data-preview="img/skola/skola-cover-900.webp" data-walk="2">primary school mural</a></li>
+          <li><a href="/work" class="plist__link" data-project="masaze" data-cursor="hover" data-preview="img/masaze/massage-hands-900.webp" data-walk="3">massage kostelec</a></li>
+          <li><a href="/work" class="plist__link" data-project="molo-lipno" data-cursor="hover" data-preview="img/molo-lipno/molo-5-900.webp" data-walk="2">molo lipno</a></li>
+          <li><a href="/work" class="plist__link" data-project="objecta" data-cursor="hover" data-preview="img/objecta/objecta-cover-900.webp" data-walk="3">objecta visual art</a></li>
+          <li><a href="/work" class="plist__link" data-project="live-district" data-cursor="hover" data-preview="img/live-district/preview-square.webp" data-walk="2">live district</a></li>
         </ul>
       </div>
       <!-- preview of the hovered project, right part of the first screen; the beetle walks in from the right edge -->

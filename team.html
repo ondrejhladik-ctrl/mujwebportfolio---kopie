@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#FF5436" />
+
+  <title>team — ohdesign studio</title>
+  <meta name="description" content="The team behind ohdesign studio — Ondřej Hladík, graphic designer, web designer and photographer based in Prague." />
+  <link rel="canonical" href="https://ohdesign.eu/team" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="author" content="Ondřej Hladík" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ohdesign studio" />
+  <meta property="og:url" content="https://ohdesign.eu/team" />
+  <meta property="og:title" content="team — ohdesign studio" />
+  <meta property="og:description" content="Graphic and web design studio of Ondřej Hladík in Prague — brand identity, websites, posters, typography and photography." />
+  <meta property="og:image" content="https://ohdesign.eu/img/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="ohdesign studio — the oh logo on coral" />
+  <meta property="og:locale" content="en_GB" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="team — ohdesign studio" />
+  <meta name="twitter:description" content="Graphic and web design studio of Ondřej Hladík in Prague — brand identity, websites, posters, typography and photography." />
+  <meta name="twitter:image" content="https://ohdesign.eu/img/og.png" />
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="icon-512.png" type="image/png" sizes="512x512" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+  <!-- fonts are self-hosted (fonts/) — no round-trip to Google Fonts -->
+  <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="css/styles.css" />
+
+</head>
+
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- beetle that follows the cursor over the e-mail / project names (art chosen by data-bug) -->
+
+  <!-- ===================== NAV ===================== -->
+  <header class="nav" data-nav>
+    <div class="nav__inner">
+      <a href="/" class="nav__logo" data-cursor="hover" data-magnetic>
+        <!-- inlined so it can take currentColor (coral) -->
+        <svg class="nav__logo-mark" viewBox="0 0 379.86 510.59" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ohdesign studio — home" fill="currentColor">
+          <g font-family="Georgia-Italic, Georgia" font-style="italic">
+            <text font-size="393.82" transform="translate(14.72 333.35)"><tspan x="0" y="0">h</tspan></text>
+            <text font-size="335.79" transform="translate(0 408.77) scale(2.11 1)"><tspan x="0" y="0">o</tspan></text>
+          </g>
+        </svg>
+      </a>
+
+      <button class="nav__burger" data-burger aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- menu (opens from hamburger) -->
+  <div class="menu" data-menu>
+    <nav class="menu__links" aria-label="Navigation">
+      <a href="/work">Work</a>
+      <a href="/team">Team</a>
+      <a href="/#contact">Get in touch</a>
+    </nav>
+  </div>
+
+  <main id="top">
+    <h1 class="sr-only">ohdesign studio — team</h1>
+
+    <!-- ===================== TEAM (its own page; the menu still opens it as an overlay where JS runs) ===================== -->
+    <section class="teampage" id="team">
+      <h2 class="home__title" data-title>team</h2>
+      <div class="team__grid">
+        <article class="team__member">
+          <div class="team__photo-wrap"><img class="team__photo" src="img/team/ondrej.webp" width="640" height="853" alt="Ondřej Hladík" decoding="async" /></div>
+          <p class="team__role">CEO, Graphic designer, Web designer, Photographer</p>
+          <p class="team__name">Ondřej Hladík</p>
+          <div class="team__contact">
+            <a href="mailto:ondrej.hladik@ohdesign.eu" data-cursor="hover">ondrej.hladik@ohdesign.eu</a>
+            <a href="tel:+420777071179" data-cursor="hover">+420 777 071 179</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <!-- inlined so the mark can take currentColor (same grey as the socials) -->
+        <svg class="footer__logo" viewBox="0 0 379.86 510.59" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ondřej Hladík" fill="currentColor">
+          <g font-family="Georgia-Italic, Georgia" font-style="italic">
+            <text font-size="393.82" transform="translate(14.72 333.35)"><tspan x="0" y="0">h</tspan></text>
+            <text font-size="335.79" transform="translate(0 408.77) scale(2.11 1)"><tspan x="0" y="0">o</tspan></text>
+          </g>
+        </svg>
+      </div>
+      <div class="footer__socials">
+        <a href="https://www.instagram.com/ohdesign.eu/" target="_blank" rel="noopener" data-cursor="hover">INSTAGRAM</a>
+        <a href="https://www.linkedin.com/company/145196213/" target="_blank" rel="noopener" data-cursor="hover">LINKEDIN</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
