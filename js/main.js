@@ -114,6 +114,7 @@
     const finish = () => setTimeout(() => {
       intro.classList.add('is-done');
       revealHeroTitles();
+      document.dispatchEvent(new Event('intro:done'));   // the wandering beetle on touch screens waits for this
       intro.addEventListener('transitionend', () => intro.remove(), { once: true });
     }, 450);
     if (anim && anim.finished && typeof anim.finished.then === 'function') anim.finished.then(finish).catch(finish);
@@ -529,6 +530,99 @@
   }
 
   /* ---------------------------------------------------------
+     WANDERING BEETLE — touch screens have no hover, so none of the
+     beetles above ever turn up there. Instead one beetle potters
+     about the empty patch between the nav and PROJECTS on the
+     homepage: walks to a spot, stops, turns, walks to the next…
+  --------------------------------------------------------- */
+  function initWanderBug() {
+    const bug = document.querySelector('[data-wanderbug]');
+    const home = document.querySelector('.home'), title = document.querySelector('.home__title'), nav = document.querySelector('[data-nav]');
+    if (!bug || !home || !title || prefersReduced || !matchMedia('(hover: none), (pointer: coarse)').matches) return;
+    const TURN = 0.22;       // deg per ms — turns on the spot, a half-turn takes ~0.8 s
+    const PAD = 22;          // keeps its body clear of the edges of the patch
+    let area = null, x = 0, y = 0, face = -90, tx = 0, ty = 0, speed = 0.07, state = 'wait', until = 0;
+    let raf = 0, last = 0, started = false, visible = true;
+    const wobble = Math.random() * 7;
+
+    // the patch: the content width, from under the nav down to just above PROJECTS (in the section's own coordinates)
+    function measure() {
+      const h = home.getBoundingClientRect(), t = title.getBoundingClientRect();
+      const top = (nav ? nav.offsetHeight : 0) - (h.top + scrollY) + PAD + 10, bottom = t.top - h.top - PAD - 6;
+      area = bottom - top >= 50 ? { l: PAD, r: h.width - PAD, t: top, b: bottom } : null;
+      return area;
+    }
+    const wrap = (a) => ((a + 180) % 360 + 360) % 360 - 180;
+    const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
+
+    // the next spot: a decent step away and, when possible, off to one side so the route bends rather than shuttles
+    function pick() {
+      if (!measure()) return false;
+      let fallback = null;
+      for (let k = 0; k < 10; k++) {
+        const cx = area.l + Math.random() * (area.r - area.l), cy = area.t + Math.random() * (area.b - area.t);
+        if (Math.hypot(cx - x, cy - y) < 60) continue;
+        fallback = { x: cx, y: cy };
+        if (Math.abs(wrap(Math.atan2(cy - y, cx - x) * 180 / Math.PI + 90 - face)) > 30) break;
+      }
+      const spot = fallback || { x: (area.l + area.r) / 2, y: (area.t + area.b) / 2 };
+      tx = spot.x; ty = spot.y;
+      speed = 0.055 + Math.random() * 0.03;   // px per ms — a potter, not a march
+      return true;
+    }
+    function place(now) {
+      const wob = state === 'walk' ? Math.sin(now / 55 + wobble) * 4 : 0;   // legs working
+      bug.style.transform = 'translate(' + x + 'px,' + y + 'px) translate(-50%,-50%) rotate(' + (face + wob) + 'deg)';
+    }
+    function loop(now) {
+      const dt = Math.min(now - (last || now), 40); last = now;
+      if (state === 'turn' || state === 'walk') {
+        // art points up → +90° faces the way it goes
+        const diff = wrap(Math.atan2(ty - y, tx - x) * 180 / Math.PI + 90 - face);
+        face += Math.sign(diff) * Math.min(Math.abs(diff), TURN * dt);
+        if (state === 'turn' && Math.abs(diff) < 2) state = 'walk';
+      }
+      if (state === 'walk') {
+        const d = Math.hypot(tx - x, ty - y), step = speed * dt;
+        if (d <= step) { x = tx; y = ty; state = 'wait'; until = now + 500 + Math.random() * 1400; }   // arrived → a moment's pause
+        else { x += (tx - x) / d * step; y += (ty - y) / d * step; }
+      } else if (state === 'wait' && now >= until && pick()) state = 'turn';
+      place(now);
+      raf = visible ? requestAnimationFrame(loop) : 0;
+    }
+
+    function begin() {
+      if (!measure()) { started = true; return; }   // no room (landscape phone) → it waits for a resize
+      started = true;
+      // comes in from the right edge, level with the middle of the patch, like the walking beetle on desktop
+      x = area.r + 30; y = (area.t + area.b) / 2; face = -90;
+      pick(); state = 'turn'; place(performance.now());
+      bug.classList.add('is-on');
+      last = 0; cancelAnimationFrame(raf); raf = requestAnimationFrame(loop);
+    }
+    addEventListener('resize', () => {
+      if (!started) return;
+      const had = !!area;
+      if (!measure()) { bug.classList.remove('is-on'); state = 'wait'; return; }   // patch too small → hides until there's room again
+      if (!had) bug.classList.add('is-on');
+      x = clamp(x, area.l, area.r); y = clamp(y, area.t, area.b);
+      if (tx < area.l || tx > area.r || ty < area.t || ty > area.b) { pick(); state = 'turn'; }
+      if (!raf && visible) { last = 0; raf = requestAnimationFrame(loop); }
+    });
+    // nothing to see while the first screen is scrolled away → the loop rests
+    if ('IntersectionObserver' in window) new IntersectionObserver((en) => {
+      visible = en[0].isIntersecting;
+      if (visible && started && !raf) { last = 0; raf = requestAnimationFrame(loop); }
+    }).observe(home);
+
+    // a beat after the intro slides away and PROJECTS has revealed
+    const intro = document.querySelector('.intro');
+    const go = () => setTimeout(begin, 700);
+    if (intro && !intro.classList.contains('is-done')) document.addEventListener('intro:done', go, { once: true });
+    else go();
+  }
+
+  /* ---------------------------------------------------------
      REVEAL
   --------------------------------------------------------- */
   function initReveal() {
@@ -877,7 +971,7 @@
      BOOT
   --------------------------------------------------------- */
   function boot() {
-    initTitleReveal(); runIntro(); initMailbug(); initWalkBug(); initMenuBugs(); initReveal(); initNav(); initMenu();
+    initTitleReveal(); runIntro(); initMailbug(); initWalkBug(); initWanderBug(); initMenuBugs(); initReveal(); initNav(); initMenu();
     initMagnetic(); initMisc(); initProjectModal(); initTeamModal();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
