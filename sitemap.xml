@@ -1,26 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- homepage -->
   <url>
     <loc>https://ohdesign.eu/</loc>
-    <lastmod>2026-09-18</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://ohdesign.eu/img/og.png</image:loc>
-      <image:title>ohdesign studio — Ondřej Hladík</image:title>
+      <image:title>ohdesign studio — graphic design, web design and photography, Prague</image:title>
     </image:image>
+  </url>
+
+  <!-- work: the project grid, so the project images belong here -->
+  <url>
+    <loc>https://ohdesign.eu/work</loc>
+    <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
     <image:image>
-      <image:loc>https://ohdesign.eu/img/skola/skola-cover.jpg</image:loc>
-      <image:title>Primary School Mural — illustrations by ohdesign studio</image:title>
+      <image:loc>https://ohdesign.eu/img/molo-lipno/molo-5.jpg</image:loc>
+      <image:title>Molo Lipno — interior photography by ohdesign studio</image:title>
     </image:image>
     <image:image>
       <image:loc>https://ohdesign.eu/img/masaze/massage-hands.jpg</image:loc>
       <image:title>Massage Kostelec — brand identity by ohdesign studio</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://ohdesign.eu/img/molo-lipno/molo-5.jpg</image:loc>
-      <image:title>Molo Lipno — interior photography by ohdesign studio</image:title>
+      <image:loc>https://ohdesign.eu/img/skola/skola-cover.jpg</image:loc>
+      <image:title>Primary School Mural — illustrations by ohdesign studio</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ohdesign.eu/img/klauzury/klauzury-cover.jpg</image:loc>
+      <image:title>Semester Project — Bezedné noci cassette &amp; website by ohdesign studio</image:title>
     </image:image>
     <image:image>
       <image:loc>https://ohdesign.eu/img/objecta/objecta-cover.jpg</image:loc>
@@ -31,16 +45,17 @@
       <image:title>Live District — website by ohdesign studio</image:title>
     </image:image>
   </url>
+
+  <!-- team -->
   <url>
     <loc>https://ohdesign.eu/team</loc>
-    <lastmod>2026-09-18</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://ohdesign.eu/img/team/ondrej.webp</image:loc>
+      <image:title>Ondřej Hladík — graphic designer, web designer and photographer</image:title>
+    </image:image>
   </url>
-  <url>
-    <loc>https://ohdesign.eu/work</loc>
-    <lastmod>2026-09-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
+
 </urlset>
