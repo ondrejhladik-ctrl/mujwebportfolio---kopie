@@ -183,7 +183,18 @@
     setTimeout(() => links.forEach((a) => { const src = a.dataset.preview; if (src && !/-anim\./.test(src)) { const im = new Image(); im.src = src; } }), 1500);
     setTimeout(() => Object.values(ART).forEach((src) => { const im = new Image(); im.src = src; }), 1800);
 
-    function dest(el) { const r = el.getBoundingClientRect(); return { x: r.right + GAP, y: r.top + r.height / 2 }; }
+    function dest(el) {
+      const r = el.getBoundingClientRect();
+      let x = r.right + GAP;
+      const y = r.top + r.height / 2;
+      // with the list in two columns the beetle would stop on top of a neighbouring bar — step past it
+      links.forEach((o) => {
+        if (o === el) return;
+        const q = o.getBoundingClientRect();
+        if (y > q.top - 6 && y < q.bottom + 6 && x > q.left - 34 && x < q.right + 34) x = q.right + GAP;
+      });
+      return { x, y };
+    }
     function place(px, py, ang) { bug.style.transform = 'translate(' + px + 'px,' + py + 'px) translate(-50%,-50%) rotate(' + ang + 'deg)'; }
 
     function loop(now) {
@@ -614,6 +625,25 @@
      "shots" for real images: { img: 'img/xy.webp', wide: true }.
   --------------------------------------------------------- */
   const PROJECTS = {
+    'mishmash': {
+      web: 'https://mish-mash.cz/',
+      webLabel: 'mish-mash.cz',
+      desc: [
+        'Mish Mash is a six-piece band from Prague that, as their own line puts it, mixes everything together. I made them a visual identity that can take the same liberty — and then designed and built the website that carries it.',
+        'The wordmark is drawn as two stacked blocks of soft-cornered letters locked into one solid shape, so it reads as a single object rather than a line of type. Pulling the M and the X out of it gives a square monogram for profile pictures and stickers. Instead of one fixed colour pair, the logo comes as a set: each version splits the lettering diagonally between two colours, so the band can pick whichever pair fits a poster or a release.',
+        'The site keeps that logic — concerts, members, releases, photos and a booking form, all on black with the colour coming from the identity.'
+      ],
+      credits: [
+        'Visual identity and website by Ondřej Hladík',
+        'Band photo by Ondřej Hladík'
+      ],
+      shots: [
+        { img: 'img/mishmash/band.webp', wide: true },
+        { img: 'img/mishmash/logo.webp' },
+        { img: 'img/mishmash/monogram.webp' },
+        { img: 'img/mishmash/colours.webp', wide: true }
+      ]
+    },
     'skola': {
       web: 'https://newhow.archi/cs/projekty/novy-pavilon-zs-kostelec-u-krizku-kostelec-u-krizku-2020/',
       webLabel: 'newhow.archi/cs',   // shown instead of the full URL
@@ -688,9 +718,7 @@
         { video: 'img/klauzury/klauzury-web.mp4', square: true },
         { video: 'img/klauzury/tape.mp4', square: true },
         { img: 'img/klauzury/art-dark.webp', wide: true },
-        { img: 'img/klauzury/art-light.webp', wide: true },
-        { video: 'img/klauzury/explikace.mp4', square: true, contain: true },   // portrait recording — show it whole on black
-        { img: 'img/klauzury/site-face.webp', square: true }
+        { img: 'img/klauzury/art-light.webp', wide: true }
       ]
     },
     'objecta': {

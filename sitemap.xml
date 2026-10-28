@@ -5,7 +5,7 @@
   <!-- homepage -->
   <url>
     <loc>https://ohdesign.eu/</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -17,9 +17,13 @@
   <!-- work: the project grid, so the project images belong here -->
   <url>
     <loc>https://ohdesign.eu/work</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://ohdesign.eu/img/mishmash/mishmash-cover.jpg</image:loc>
+      <image:title>Mish Mash — band identity and website by ohdesign studio</image:title>
+    </image:image>
     <image:image>
       <image:loc>https://ohdesign.eu/img/molo-lipno/molo-5.jpg</image:loc>
       <image:title>Molo Lipno — interior photography by ohdesign studio</image:title>
@@ -49,7 +53,7 @@
   <!-- team -->
   <url>
     <loc>https://ohdesign.eu/team</loc>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <image:image>
