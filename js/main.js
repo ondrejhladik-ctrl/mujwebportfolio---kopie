@@ -641,7 +641,10 @@
         { img: 'img/mishmash/band.webp', wide: true },
         { img: 'img/mishmash/logo.webp' },
         { img: 'img/mishmash/monogram.webp' },
-        { img: 'img/mishmash/colours.webp', wide: true }
+        { img: 'img/mishmash/colours.webp', wide: true },
+        { img: 'img/mishmash/web-hero.webp', wide: true },
+        { img: 'img/mishmash/web-photos.webp' },
+        { img: 'img/mishmash/web-mobile.webp' }
       ]
     },
     'skola': {
