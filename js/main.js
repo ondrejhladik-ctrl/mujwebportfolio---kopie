@@ -625,6 +625,28 @@
      "shots" for real images: { img: 'img/xy.webp', wide: true }.
   --------------------------------------------------------- */
   const PROJECTS = {
+    'checkpoint': {
+      web: 'https://checkpointgame.eu/',
+      webLabel: 'checkpointgame.eu',
+      desc: [
+        'Checkpoint is a browser game built for the album of the same name by Dorian Wave: a retro pixel-art drive that starts in night-time Prague and does not stop until Pattaya, with petrol stations along the way and a leaderboard at the end.',
+        'Everything on screen is drawn as pixel art and then pushed through a green-on-black dot raster, so the whole thing reads like a dying CRT — the car, the city blocks, the billboards, the vodka poster in the fridge and the gas-station shield with its galloping horse. Between stages the game cuts to illustrated scenes with voice acting, and the soundtrack is the album itself.',
+        'In its first week people played it more than 14 000 times.'
+      ],
+      credits: [
+        'Game by Ondřej Hladík and @madebyt8v',
+        'Made for Dorian Wave and LBCXONLY',
+        'Music and voice acting by Dorian Wave, mixed by @mixedbydorian'
+      ],
+      shots: [
+        { img: 'img/checkpoint/title.webp', wide: true },
+        { img: 'img/checkpoint/drive.webp', wide: true },
+        { img: 'img/checkpoint/fridge.webp', wide: true },
+        { img: 'img/checkpoint/shield.webp', wide: true },
+        { img: 'img/checkpoint/vodka.webp', square: true, contain: true },
+        { img: 'img/checkpoint/preview-anim.webp', square: true, contain: true }
+      ]
+    },
     'mishmash': {
       web: 'https://mish-mash.cz/',
       webLabel: 'mish-mash.cz',
@@ -766,11 +788,16 @@
     },
     'font-design': {
       desc: [
-        'A display typeface of my own, drawn from the ground up — uppercase alphabet, numerals and the punctuation needed to set a headline. Antikva bones with the contrast pushed until the serifs read as blunt slabs rather than fine hairlines.',
-        'The specimen poster tests it the way the face is meant to be used: one letterform blown up until it stops being a letter and turns into a shape, with the full character set set small inside it. Printed large and mounted in a park — the honest way to find out whether a display face holds together at distance.'
+        'A display typeface of my own, drawn from the ground up — the uppercase A to Z plus numerals, enough to set a headline. Antikva bones with the contrast pushed until the serifs read as blunt slabs rather than fine hairlines, and a few letters left deliberately odd: the spur on the K, the tail that drops straight out of the Q.',
+        'Drawing it one letter at a time is where a face is actually decided. Blown up, the G is no longer a letter but a shape sitting between cap height and baseline, and every join and counter has to hold at that size as well as it does in a line of text.',
+        'The specimen poster puts that to the test the way the face is meant to be used: one letterform enlarged until it turns into an object, with the whole character set set small inside it. Version 1.A, 2025.'
       ],
       shots: [
-        { img: 'img/font-design/poster-mockup.webp', wide: true }
+        { video: 'img/font-design/specimen-motion.mp4', wide: true },
+        { img: 'img/font-design/specimen.webp', square: true },
+        { img: 'img/font-design/alphabet.webp', square: true },
+        { img: 'img/font-design/g-detail.webp', square: true },
+        { img: 'img/font-design/poster.webp', square: true }
       ]
     }
   };
