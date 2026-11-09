@@ -52,11 +52,15 @@
         "logo": "https://ohdesign.eu/icon-512.png",
         "image": "https://ohdesign.eu/img/og.png",
         "description": "Graphic design, web design and photography studio of Ondřej Hladík in Prague, Czech Republic.",
-        "email": "ondrej.hladik@ohdesign.eu",
+        "email": "ondrej@ohdesign.eu",
         "telephone": "+420777071179",
         "founder": {
           "@id": "https://ohdesign.eu/#ondrej"
         },
+        "employee": [
+          { "@id": "https://ohdesign.eu/#ondrej" },
+          { "@id": "https://ohdesign.eu/#rene" }
+        ],
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Prague",
@@ -107,7 +111,7 @@
         "name": "Ondřej Hladík",
         "jobTitle": "CEO, graphic designer, web designer, photographer",
         "url": "https://ohdesign.eu/",
-        "email": "ondrej.hladik@ohdesign.eu",
+        "email": "ondrej@ohdesign.eu",
         "image": "https://ohdesign.eu/img/team/ondrej.jpg",
         "worksFor": {
           "@id": "https://ohdesign.eu/#studio"
@@ -120,6 +124,23 @@
           "graphic design",
           "web design",
           "photography"
+        ]
+      },
+      {
+        "@type": "Person",
+        "@id": "https://ohdesign.eu/#rene",
+        "name": "René Nožička",
+        "jobTitle": "Co-CEO, marketing, motion designer",
+        "url": "https://ohdesign.eu/team",
+        "email": "rene@ohdesign.eu",
+        "telephone": "+420723823998",
+        "image": "https://ohdesign.eu/img/team/rene.jpg",
+        "worksFor": {
+          "@id": "https://ohdesign.eu/#studio"
+        },
+        "knowsAbout": [
+          "motion design",
+          "marketing"
         ]
       },
       {
@@ -221,7 +242,7 @@
     <section class="contact" id="contact">
       <div class="contact__body">
         <h2 class="contact__title" data-title>GET IN TOUCH</h2>
-        <a href="mailto:ondrej.hladik@ohdesign.eu" class="contact__mail" data-cursor="hover" data-bug="1">ondrej.hladik@ohdesign.eu</a>
+        <a href="mailto:ondrej@ohdesign.eu" class="contact__mail" data-cursor="hover" data-bug="1">ondrej@ohdesign.eu</a>
       </div>
     </section>
   </main>
@@ -260,8 +281,17 @@
           <p class="team__role">CEO, Graphic designer, Web designer, Photographer</p>
           <p class="team__name">Ondřej Hladík</p>
           <div class="team__contact">
-            <a href="mailto:ondrej.hladik@ohdesign.eu" data-cursor="hover">ondrej.hladik@ohdesign.eu</a>
+            <a href="mailto:ondrej@ohdesign.eu" data-cursor="hover">ondrej@ohdesign.eu</a>
             <a href="tel:+420777071179" data-cursor="hover">+420 777 071 179</a>
+          </div>
+        </article>
+        <article class="team__member">
+          <div class="team__photo-wrap"><img class="team__photo" data-src="img/team/rene.webp" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='532' height='709'/%3E" width="532" height="709" alt="René Nožička" decoding="async" /></div>
+          <p class="team__role">Co-CEO, Marketing, Motion designer</p>
+          <p class="team__name">René Nožička</p>
+          <div class="team__contact">
+            <a href="mailto:rene@ohdesign.eu" data-cursor="hover">rene@ohdesign.eu</a>
+            <a href="tel:+420723823998" data-cursor="hover">+420 723 823 998</a>
           </div>
         </article>
       </div>

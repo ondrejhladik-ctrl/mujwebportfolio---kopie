@@ -34,6 +34,48 @@
   <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="css/styles.css" />
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "@id": "https://ohdesign.eu/team#page",
+    "url": "https://ohdesign.eu/team",
+    "name": "Team — ohdesign studio",
+    "inLanguage": "en",
+    "isPartOf": { "@id": "https://ohdesign.eu/#website" },
+    "mainEntity": {
+      "@type": "ProfessionalService",
+      "@id": "https://ohdesign.eu/#studio",
+      "name": "ohdesign studio",
+      "url": "https://ohdesign.eu/",
+      "employee": [
+        {
+          "@type": "Person",
+          "@id": "https://ohdesign.eu/#ondrej",
+          "name": "Ondřej Hladík",
+          "jobTitle": "CEO, graphic designer, web designer, photographer",
+          "email": "ondrej@ohdesign.eu",
+          "telephone": "+420777071179",
+          "image": "https://ohdesign.eu/img/team/ondrej.jpg",
+          "worksFor": { "@id": "https://ohdesign.eu/#studio" },
+          "knowsAbout": ["graphic design", "web design", "photography"]
+        },
+        {
+          "@type": "Person",
+          "@id": "https://ohdesign.eu/#rene",
+          "name": "René Nožička",
+          "jobTitle": "Co-CEO, marketing, motion designer",
+          "email": "rene@ohdesign.eu",
+          "telephone": "+420723823998",
+          "image": "https://ohdesign.eu/img/team/rene.jpg",
+          "worksFor": { "@id": "https://ohdesign.eu/#studio" },
+          "knowsAbout": ["motion design", "marketing"]
+        }
+      ]
+    }
+  }
+  </script>
+
 </head>
 
 <body>
@@ -70,20 +112,28 @@
   </div>
 
   <main id="top">
-    <h1 class="sr-only">Team — Ondřej Hladík, CEO, graphic designer, web designer &amp; photographer at ohdesign studio, Prague</h1>
+    <h1 class="sr-only">Team — ohdesign studio, Prague: Ondřej Hladík and René Nožička</h1>
 
     <!-- ===================== TEAM (its own page; the menu still opens it as an overlay where JS runs) ===================== -->
     <section class="teampage" id="team">
       <h2 class="home__title" data-title>team</h2>
-      <p class="teampage__lead">ohdesign studio is the studio of Ondřej Hladík in Prague — graphic design, web design and photography.</p>
       <div class="team__grid">
         <article class="team__member">
           <div class="team__photo-wrap"><img class="team__photo" src="img/team/ondrej.webp" width="640" height="853" alt="Ondřej Hladík" decoding="async" /></div>
           <p class="team__role">CEO, Graphic designer, Web designer, Photographer</p>
           <p class="team__name">Ondřej Hladík</p>
           <div class="team__contact">
-            <a href="mailto:ondrej.hladik@ohdesign.eu" data-cursor="hover">ondrej.hladik@ohdesign.eu</a>
+            <a href="mailto:ondrej@ohdesign.eu" data-cursor="hover">ondrej@ohdesign.eu</a>
             <a href="tel:+420777071179" data-cursor="hover">+420 777 071 179</a>
+          </div>
+        </article>
+        <article class="team__member">
+          <div class="team__photo-wrap"><img class="team__photo" src="img/team/rene.webp" width="532" height="709" alt="René Nožička" loading="lazy" decoding="async" /></div>
+          <p class="team__role">Co-CEO, Marketing, Motion designer</p>
+          <p class="team__name">René Nožička</p>
+          <div class="team__contact">
+            <a href="mailto:rene@ohdesign.eu" data-cursor="hover">rene@ohdesign.eu</a>
+            <a href="tel:+420723823998" data-cursor="hover">+420 723 823 998</a>
           </div>
         </article>
       </div>

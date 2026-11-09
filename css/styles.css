@@ -206,17 +206,16 @@ body.is-home .contact__body { text-align: left; padding-left: 0; padding-right: 
 .team__member { display: flex; flex-direction: column; align-items: flex-start; text-transform: lowercase; }
 .team__photo-wrap { width: 100%; aspect-ratio: 3 / 4; overflow: hidden; background: var(--duo); border: 1px solid var(--line); margin-bottom: clamp(.9rem,2vw,1.3rem); }
 .team__photo { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(1) contrast(1.08); mix-blend-mode: multiply; }
-.team__role { font-family: var(--font-sans); font-weight: 600; font-size: var(--step--1); letter-spacing: .01em; color: var(--fg); }
-.team__name { margin-top: .5rem; font-family: var(--font-sans); font-weight: 500; font-size: var(--step--1); letter-spacing: .04em; color: var(--fg-dim); }
+.team__role { font-family: var(--font-serif); font-weight: 400; font-size: var(--step-0); line-height: 1.45; letter-spacing: 0; color: var(--serif-fg); }
+.team__name { margin-top: .5rem; font-family: var(--font-serif); font-weight: 400; font-size: var(--step--1); line-height: 1.45; letter-spacing: 0; color: var(--fg-dim); }
 .team__contact { display: flex; flex-direction: column; gap: .3rem; margin-top: .35rem; }
-.team__contact a { font-family: var(--font-sans); font-weight: 500; font-size: var(--step--1); letter-spacing: .04em; color: var(--fg-dim); transition: color .3s; word-break: break-word; }
+.team__contact a { font-family: var(--font-serif); font-weight: 400; font-size: var(--step--1); line-height: 1.45; letter-spacing: 0; color: var(--fg-dim); transition: color .3s; word-break: break-word; }
 
 /* =========================================================
    TEAM PAGE (team.html) — same title treatment as the homepage
    ========================================================= */
 .teampage { max-width: var(--maxw); margin: 0 auto; padding: clamp(6rem,14vh,9rem) var(--pad) clamp(4rem,9vw,7rem); }
-.teampage .home__title { margin-bottom: clamp(1.2rem,3vw,2rem); }
-.teampage__lead { max-width: 44rem; margin-bottom: clamp(2rem,5vw,3.4rem); font-family: var(--font-serif); font-size: var(--step-1); line-height: 1.6; color: var(--serif-fg); }
+.teampage .home__title { margin-bottom: clamp(2.4rem,6vw,4rem); }
 .teampage .team__grid { margin: 0; }
 
 /* =========================================================
